@@ -101,3 +101,33 @@ resetButton.addActionListener(new ActionListener(){
 			}
 		});
 }}}
+
+  * When you press reset, you need to change the Labels back to their original values.  Add code for all of the labels.  For example:
+{{{
+playerScoreLabel.setText("0");
+}}}
+  * Add an 'Event Handler' for the Play button as well.  Here, you should add the code for playing one round of the game.  First, you need to read the player choices for Fingers and the Sum.  This example shows how to do this:
+{{{
+int playerFingers = Integer.parseInt(fingerChoice.getItem(fingerChoice.getSelectedIndex()));
+}}}
+  * Next, you need to determine the fingers the computer will use, and the guess.  You can generate these randomly.  Then, update the Labels with these values.
+  * Now, check the sum of the player and computer fingers, to see if either player wins a point.  If so, add 1 to their score, and update the score Label.
+  *Lastly, we must check if one player has won the game.  To get the end score from the box, we can use:
+{{{
+int endScore = Integer.parseInt(endScoreTextbox.getText());
+}}}
+  * If someone has won, we can display a message box to them.  An example would be:
+{{{
+if(playerScore == endScore){
+					// Player wins
+					JOptionPane.showMessageDialog(null, "You win");
+				}
+}}}
+  * Add message boxes for the Computer winning, and a Tie.
+
+===Other things to add===
+  * Instead of a pop up box, highlight the score when a player wins.
+  * Make the computer smarter, by making it only guess a sum that is larger than the number of fingers it picks.
+  * You can try adding a second computer player, so there are three in total, and you must guess the sum of all three.
+  * Try changing the allowed number of fingers, so you can use all 10 fingers on both hands.
+  * Using the GridLayout, make a new game using a 3x3 grid of Tic-Tac-Toe.  You can use buttons for each square, with an X or an O on them.
