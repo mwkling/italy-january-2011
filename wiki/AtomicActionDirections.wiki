@@ -16,3 +16,9 @@ synchronized(lock){
 }}}
   * This means, if we call areEqual() in the middle of reverse(), we will wait until reverse() has finished.
   * Run the program again, to see the new result.
+  * Now, delete the lock, and the word synchronized from both functions.
+  * Add the word synchronized to the front of each function.  This will look like:
+{{{
+synchronized public boolean areEqual()
+}}}
+  * Run the program again, to see the result.
