@@ -1,0 +1,48 @@
+Code for Start.java:
+{{{
+public class Start {
+	
+	public static void main(String[] args) {
+		for(int i=0; i<10; i++){
+			
+			// Create 2 new threads
+			Thread t1 = new Thread(new SameTimePrint("X"));
+		    Thread t2 = new Thread(new SameTimePrint("."));
+			
+			t1.start();
+			t2.start();
+			
+			// We wait until both t1 and t2 are finished.
+			while(t1.isAlive() || t2.isAlive()) {}
+			
+			System.out.println();
+		}
+	}
+
+}
+}}}
+
+Code for SameTimePrint.java:
+{{{
+public class SameTimePrint implements Runnable {
+	
+	String toPrint;
+	public SameTimePrint(String s){
+		toPrint = s;
+	}
+	
+	@Override
+	public void run() {
+		try{
+		
+		// We print the string given 10 times.
+		for(int i = 0; i<10; i++){
+			System.out.print(toPrint);
+			Thread.sleep(1);
+		}
+		
+		}catch(Exception e){}
+	}
+
+}
+}}}
