@@ -1,4 +1,5 @@
 = Introduction =
+  * Today, we will work on Threads in Java, which is related to concurrency, and transactions, but also different.  Next time, we will talk more specifically about databases, transactions, etc.
   * Create a new Java Project.
   * Create a new class, named Start.  
   * Create another new class, named 'SameTimePrint'
