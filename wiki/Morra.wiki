@@ -1,0 +1,49 @@
+  * First, create a new java project.
+  * Create a new class, named Morra, and put in the code below.  This is the basic code we used last time to make a window, so you can get started more easily.
+
+{{{
+import java.awt.Frame;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+
+public class Morra extends Frame {
+	// Add variables here:
+
+	public Morra(){
+		super("Morra");
+		this.setSize(400, 160);
+
+		// Add code here:
+		
+		
+		// If you do not have this code, you can not close
+		// the window.
+		this.addWindowListener(new WindowAdapter(){
+			public void windowClosing(WindowEvent e){
+				setVisible(false); dispose(); System.exit(0);
+			}
+		});
+	}
+	
+	public static void main(String[] args) {
+		// Create and display the window
+		Morra game = new Morra();
+		game.setVisible(true);
+	}
+
+}
+}}}
+
+  * If you run the program now, you should see an empty window named Morra.
+  * Now, we will add buttons and text to the Window.  We want to use a Grid to lay these out.  The grid has 4 rows and 4 columns.  To do this, we can add the code below to the constructor:
+{{{
+// The window will be a 4x4 grid
+this.setLayout(new GridLayout(4,4));
+}}}
+  * Next, we start adding things to the grid.  They will be added from left to right, as shown:
+http://download.oracle.com/javase/1.4.2/docs/api/java/awt/doc-files/GridLayout-1.gif
+  * First, add the labels on the top, for "Fingers", "Sum Guess", and "Score".  To add a label, you can use:
+{{{
+this.add(new Label("Label Name"));
+}}}
