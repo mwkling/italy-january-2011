@@ -1,0 +1,7 @@
+= Introduction =
+  * Create a new Java Project.
+  * Create a new class, named Start.  
+  * Create another new class, named 'SameTimePrint'
+  * Put the code from the wiki page 'ThreadIntroCode' into these classes.
+  * Look carefully at the main function.  We create 2 threads.  Then, we start running both at the same time.  When both are done, we move to the next line, and repeat.
+  * Run the program several times, and compare the outputs.
