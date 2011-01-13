@@ -47,3 +47,57 @@ http://download.oracle.com/javase/1.4.2/docs/api/java/awt/doc-files/GridLayout-1
 {{{
 this.add(new Label("Label Name"));
 }}}
+
+Check to make sure the top row looks correct.
+
+  * Now, we move to the second row.  First, add a Label for the player.
+  * Next, we want to add the Box for choosing the number of fingers.  To do this, we need to create a new variable in the class:
+{{{
+private Choice fingerChoice;
+}}}
+  * Now, in the constructor we can make a new fingerChoice box, and add different choices.  You can add choices for the numbers from 1 to 5.
+{{{
+fingerChoice = new Choice();
+fingerChoice.add("1");
+// Use add to add the other numbers.
+this.add(fingerChoice);
+}}}
+  * Run the program to see if you made the choice box correctly.
+  * Now, add a second Choice box, with numbers from 2 to 10, for guessing the sum of the two numbers.
+  * Lastly on this row, we add a Label for the player score.  Add a Label to the class:
+{{{
+private Label playerScoreLabel;
+}}}
+  * Then, initialize the label, and add it to the Frame, in the constructor:
+{{{
+playerScoreLabel = new Label("0");
+this.add(playerScoreLabel);
+}}}
+  * For the third row, add a Label for "Computer".  Then, add three more variables to the class for the computer information:
+{{{
+private Label computerScoreLabel;
+private Label computerFingersLabel;
+private	Label computerGuessLabel;
+}}}
+  * On the last row, add two buttons, one to Play and one to Reset.
+{{{
+Button playButton = new Button("Play");
+Button resetButton = new Button("Reset");
+}}}
+  * Finally, add a TextField to the class where you can store the final score of the game.
+{{{
+private TextField endScoreTextbox;
+}}}
+  * To initialize the TextField with a number, use:
+{{{
+endScoreTextbox = new TextField("11");
+}}}
+  * *Now, run the program and make sure the window has all of the parts you need.*
+  * To finish the program, we must make the Play and Reset buttons do something.  First, we can do the reset button, which is easier.  To add an 'Event Handler', use the example here:
+{{{
+resetButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+                            // When you press reset, code goes here:
+			}
+		});
+}}}
