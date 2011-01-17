@@ -108,7 +108,9 @@ field.addKeyListener(new KeysDemo());
   * When you type a letter, there are 3 events.  What are these 3?
   * Try pressing a different key, like Shift, or Ctrl.  How many events are there?
   * What happens if you hold down a key?
-  * Try many different keys.  Is there a difference between left and right shift?  Can you find a key which has nothing printed?
+  * Try many different keys.  Is there a difference between left and right shift?
+  * What happens if you type a *tab*?
+  * What happens if you type a capital letter using Shift?
 
 ===Part 2: Mouse Events===
   * Now, create a new class called MouseDemo.  Copy the code below:
@@ -150,3 +152,4 @@ field.addMouseListener(new MouseDemo());
   * Run the program, and make sure you can see the *Console*.  Move the mouse into and out of the window.  What is printed in the Console?
   * Try clicking in the window.  How many events occur when you click?  What if you click, but don't let go?
   * Now, try clicking quickly, several times in a row.  What happens?
+  * Click inside the window, move outside the window, and let go.  What happense?
