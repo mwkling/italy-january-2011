@@ -92,7 +92,7 @@ if((squares[0].getLabel()==squares[1].getLabel() && squares[1].getLabel()==squar
   * Use a JOptionPane to show a pop up window when a player has won.  You can do this as:
 {{{
 String player = "X";
-							if(xTurn) player = "O";
-							JOptionPane.showMessageDialog(null, player + " wins!");
+if(xTurn) player = "O";
+JOptionPane.showMessageDialog(null, player + " wins!");
 }}}
   * Now, clear the board whenever a player wins the game.  Also, make sure you have checked for ties.
