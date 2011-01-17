@@ -11,7 +11,8 @@ import java.awt.event.WindowEvent;
 
 
 public class Morra extends Frame {
-	
+	// Add variables here:
+
 	public Morra(){
 		super("Morra");
 		this.setSize(400, 160);
