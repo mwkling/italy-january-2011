@@ -1,7 +1,5 @@
   * First, create a new java project.
-  * Create a new class, named Morra, and put in the code below.  This code creates a basic window as we did last time, and also creates a 4x4 grid, which we will use 
-
-to place the parts of the game on.
+  * Create a new class, named Morra, and put in the code below.  This code creates a basic window as we did last time, and also creates a 4x4 grid, which we will use to place the parts of the game on.
 
 
 {{{
@@ -61,9 +59,7 @@ public class Morra extends Frame {
 }}}
 
   * If you run the program now, you should see window with the numbers 1-16.
-  * Now, we will add buttons and text to the Window.  We want to use a Grid to lay these out.  The grid has 4 rows and 4 columns.  To do this, we used the code below 
-
-(don't copy, it is already there):
+  * Now, we will add buttons and text to the Window.  We want to use a Grid to lay these out.  The grid has 4 rows and 4 columns.  To do this, we used the code below (don't copy, it is already there):
 {{{
 // The window will be a 4x4 grid
 this.setLayout(new GridLayout(4,4));
@@ -138,12 +134,10 @@ private TextField endScoreTextbox;
   * To initialize the TextField with a number, use:
 {{{
 endScoreTextbox = new TextField("11");
-this.add(endScoreTextbox);
+this.add(endScoreTextbox);  // This will replace Label 16
 }}}
   * *Now, run the program and make sure the window has all of the parts you need.*
-  * To finish the program, we must make the Play and Reset buttons do something.  First, we can do the reset button, which is easier.  To add an 'Event Handler', use 
-
-the example here:
+  * To finish the program, we must make the Play and Reset buttons do something.  First, we can do the reset button, which is easier.  To add an 'Event Handler', use the example here:
 {{{
 resetButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -166,9 +160,7 @@ playButton.addActionListener(new ActionListener(){
 		});
 
 }}}
-  * Here, you should add the code for playing one round of the game.  First, you need to read the player choices for Fingers and the Sum.  This example shows how to do 
-
-this:
+  * Here, you should add the code for playing one round of the game.  First, you need to read the player choices for Fingers and the Sum.  This example shows how to do this:
 {{{
 int playerFingers = Integer.parseInt(fingerChoice.getItem(fingerChoice.getSelectedIndex()));
 int playerSumGuess = Integer.parseInt(sumChoice.getItem(sumChoice.getSelectedIndex()));
@@ -177,9 +169,7 @@ int playerSumGuess = Integer.parseInt(sumChoice.getItem(sumChoice.getSelectedInd
 {{{
 int compFings = (int)(Math.random()*5 + 1);  // This generates a random integer from 1-5.  Why does this work?
 }}}
-  * Now, check the sum of the player and computer fingers, to see if either player wins a point.  If so, add 1 to their score, and update the score Label.  Code for 
-
-updating the labels is below:
+  * Now, check the sum of the player and computer fingers, to see if either player wins a point.  If so, add 1 to their score, and update the score Label.  Code for updating the labels is below:
 {{{
 playerScoreLabel.setText(Integer.toString(playerScore));
 computerScoreLabel.setText(Integer.toString(computerScore));
