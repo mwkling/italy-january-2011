@@ -46,7 +46,7 @@ public class EventDemo {
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-Inspired by: http://download.oracle.com/javase/tutorial/uiswing/events/keylistener.html
+// Inspired by: http://download.oracle.com/javase/tutorial/uiswing/events/keylistener.html
 public class KeysDemo implements KeyListener {
 
 	// We listen to what happens to the key presses
