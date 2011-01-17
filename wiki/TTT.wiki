@@ -1,0 +1,95 @@
+  * To start, we begin with a basic window, that has 9 buttons:
+{{{
+import java.awt.Button;
+import java.awt.Choice;
+import java.awt.Font;
+import java.awt.Frame;
+import java.awt.GridLayout;
+import java.awt.Label;
+import java.awt.TextField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.Random;
+
+import javax.swing.JOptionPane;
+
+
+public class TTT extends Frame{
+
+	Button squares[] = new Button[9];
+	boolean xTurn = true;
+	
+	public TTT(){
+		super("Tic-Tac-Toe");
+		this.setSize(300, 300);
+
+		// Add code here:		
+		// The window will be a 3x3 grid
+		this.setLayout(new GridLayout(3,3));
+		
+		for(int i=0; i<9; i++){
+			Button b = new Button();
+			squares[i] = b;
+                        // Add code here:
+
+                        //**********************
+			this.add(b);
+		}
+		
+		// If you do not have this code, you can not close
+		// the window.
+		this.addWindowListener(new WindowAdapter(){
+			public void windowClosing(WindowEvent e){
+				setVisible(false); dispose(); System.exit(0);
+			}
+		});
+	}
+	
+	public static void main(String[] args) {
+		// Create and display the window
+		TTT game = new TTT();
+		game.setVisible(true);
+	}
+
+
+}
+
+}}}
+
+  * Now, the only thing left is to add the listener for each of the buttons.  To start, add this:
+{{{
+	// This occurs every time a button  is clicked.
+			b.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e){
+					Button temp = ((Button)e.getSource());
+					String label = temp.getLabel();
+					if(label=="") {
+						if(xTurn){
+							temp.setLabel("X");
+						}
+						else{
+							temp.setLabel("O");
+						}
+                                                xTurn = !xTurn;
+					}
+				}
+			});
+}}}
+
+  * Try running the game now.  You will see a board, and should be able to click and add X's and O's to it.  Make sure you see how the code is adding the X's and O's to the boards.
+  * Now, you need to check if anyone has won the game.  There are 8 different ways to win tic tac toe, and we can check all of them.  The first way might be the top row:
+{{{
+if((squares[0].getLabel()==squares[1].getLabel() && squares[1].getLabel()==squares[2].getLabel() && squares[0].getLabel()!="")){
+// A player won in the top row.
+}
+}}}
+  * Add the needed code, using *OR*, to check if a player has won in any of the 8 possible places.
+  * Use a JOptionPane to show a pop up window when a player has won.  You can do this as:
+{{{
+String player = "X";
+							if(xTurn) player = "O";
+							JOptionPane.showMessageDialog(null, player + " wins!");
+}}}
+  * Now, clear the board whenever a player wins the game.  Also, make sure you have checked for ties.
