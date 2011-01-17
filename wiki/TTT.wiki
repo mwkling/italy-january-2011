@@ -73,6 +73,9 @@ public class TTT extends Frame{
 							temp.setLabel("O");
 						}
                                                 xTurn = !xTurn;
+                                                // Check for winning here:
+
+                                                //**************
 					}
 				}
 			});
