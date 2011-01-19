@@ -1,0 +1,157 @@
+  * Now, we will create *TWO* new java projects, one called Server, and one called Client.
+  * In the Server, create a class called ChatServer.  Put the following code:
+{{{
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+// http://web.mit.edu/6.005/www/sp10/labs/lab3/lab.html
+/**
+ * Listens in port 4444 for a connection. If a connection occurs, reads the
+ * first line, echoes it back, and exits.
+ */
+public class ChatServer {
+
+	public static void main(String[] args) {
+
+		// Create a socket server that listens on port 4444 in the local
+		// machine.
+		ServerSocket serverSocket = null;
+		try {
+			serverSocket = new ServerSocket(4444);
+		} catch (IOException e) {
+			System.err.println("Could not listen on port: 4444.");
+			System.exit(1);
+		}
+
+		// The server waits until someone connects, and when someone
+		// does, it creates a socket.
+		Socket socket = null;
+		try {
+			System.out.println("Accepting connections...");
+			socket = serverSocket.accept();
+		} catch (IOException e) {
+			System.err.println("Accept failed.");
+			System.exit(1);
+		}
+
+		// Create a buffered reader to read the input.
+		BufferedReader reader = null;
+		PrintWriter writer = null;
+
+		try {
+
+			// Create reader and writer, connect them to socket.
+			reader = new BufferedReader(new InputStreamReader(socket
+					.getInputStream()));
+			writer = new PrintWriter(socket.getOutputStream(), true);
+
+			// Acknowledge connection.
+			writer.append("Connected to server. Type a line of input followed by the ENTER key.");
+			writer.append(System.getProperty("line.separator"));
+			writer.flush();
+
+			// Read the first line.
+			String line = reader.readLine();
+
+			// Echo the first line.
+			writer.println("You said: " + line);
+			
+			// Close streams, socket and socket server.
+			writer.println("Closing connection... ");
+			writer.flush();
+			reader.close();
+			writer.close();
+			socket.close();
+			serverSocket.close();
+			
+
+		} catch (IOException e) {
+			System.out.println("I/O error (will exit): " + e.getMessage());
+			System.exit(1);
+		}
+		
+		System.out.println("Terminating server.");
+	}
+}
+
+}}}
+
+  * Try running the program.  It should print "Accepting Connections..."
+*If there is a firewall warning message, make sure you ALLOW the program to pass through the firewall.  If there is another message, ask me.*
+  * In the second project, create a class called ChatClientMain.  Put the following code:
+{{{
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
+public class ChatClientMain {
+
+	private Socket friendlySocket;
+	private PrintWriter out;
+	private BufferedReader in;
+
+	String hostName;
+	int port;
+
+	public ChatClientMain() throws IOException, UnknownHostException {
+		this("localhost", 4444);
+	}
+
+	public ChatClientMain(String hostName, int port) throws IOException {
+		this.hostName = hostName;
+		this.port = port;
+
+		friendlySocket = new Socket(hostName, port);
+		out = new PrintWriter(friendlySocket.getOutputStream(), true);
+		in = new BufferedReader(new InputStreamReader(friendlySocket.getInputStream()));
+	}
+
+	public void writeLine(String input) {
+		out.println(input);
+	}
+
+	public String readLine() throws IOException {
+		return in.readLine();
+	}
+
+	public boolean canRead() throws IOException {
+		return in.ready();
+	}
+
+	public void close() throws IOException {
+		out.close();
+		in.close();
+		friendlySocket.close();
+	}
+	public static void main(String[] args) throws Exception {
+		ChatClientMain client = new ChatClientMain();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		
+		// Need to wait for server response
+		Thread.sleep(1000);
+		
+		while(true){
+			while(client.canRead()) {
+				System.out.println(client.readLine());
+			}
+			String line = reader.readLine();
+			client.writeLine(line);
+			
+			// Wait for response
+			Thread.sleep(1000);
+		}
+	}
+}
+
+}}}
+
+  * Now, run the Server, and after, run the Client.  Type a message into the Client and press enter.  What is the result?
+  * Add a loop to Server, so it will keep replying after you send 1 message.
+For more information, look at http://web.mit.edu/6.005/www/sp10/labs/lab3/lab.html.
