@@ -1,0 +1,95 @@
+===Part 1: Math Background===
+  * Create a new Java project.  Create a new class called *Main*.
+  * Paste the code below into *Main*:
+{{{
+import java.awt.Button;
+import java.awt.Canvas;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.FlowLayout;
+import java.awt.Frame;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.IOException;
+import java.net.MalformedURLException;
+
+import javax.imageio.ImageIO;
+
+/**
+ * This class demonstrates how to load an Image from an external file
+ */
+public class Main extends Component {	
+	public static void main(String[] args) throws Exception {
+        Frame f = new Frame("Thread Sample");
+        f.setLayout(new GridLayout());
+        
+        Button button = new Button("START");
+        
+        button.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+	                      // Button listener code:
+
+                              ////////////////////////
+			}
+        });
+        
+        
+        f.add(button);
+        
+        Canvas space = new Canvas();
+        f.add(space);
+               
+        f.addWindowListener(new WindowAdapter(){
+            public void windowClosing(WindowEvent e) {
+                System.exit(0);
+            }
+        });
+        f.setSize(900, 300);
+        f.setVisible(true);
+        
+        // Loop, changing color of canvas randomly.
+        while(true){
+        	space.setBackground(new Color((float)Math.random(), (float)Math.random(), (float)Math.random()));
+        	Thread.sleep(250);
+        }
+        
+        
+    }
+}
+}}}
+
+  * Try running the program.  You should see a button next to a square.  The color of the square changes 4 times per second.
+  * Now, try adding code to run when you click the button.  Paste the following math code into the button handler:
+{{{
+double k = 0;
+for(int i=0; i<10000000; i++){
+    k += Math.sin(Math.random()) + Math.log(Math.random());
+}
+System.out.println("Finished with hard math");
+}}}
+  * Now, run the program.  Press the button.  What happens to the colors?
+  * We want to use a thread to run the math in the background.
+  * Create a new class called *BackgroundMath*.  Paste the following code:
+{{{
+public class BackgroundMath implements Runnable {
+
+	@Override
+	public void run() {
+		// Put code here:
+                
+                ///////////////////////
+	}
+
+}
+}}}
+  * Now, inside the run method, put the same code from the button handler.
+  * In the button handler, *delete* the math code.  Instead, replace with code for a new Thread:
+{{{
+new Thread(new BackgroundMath()).start();
+}}}
+  * This code starts a new thread to execute the math in the background.  Now try running the program.  Click the button.  What happens to the colors?
+===Part 2: Loading Image in the background===
