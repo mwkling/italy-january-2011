@@ -6,6 +6,7 @@
   * Which of these work, and which don't?  Why?
 
   * On your computer, go to a command prompt.  Type in 'netstat -a'.  This will show a list of all the places your computer is connected to, and what port.  Try going to a website, and observe the list.
+  * Go to http://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers to see what some of these ports correspond to.  Look at 80, 443, and 135
 
   * Create a new Java project, and copy the code below, into a class called Weather.
 {{{
