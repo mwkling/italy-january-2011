@@ -154,4 +154,6 @@ public class ChatClientMain {
 
   * Now, run the Server, and after, run the Client.  Type a message into the Client and press enter.  What is the result?
   * Add a loop to Server, so it will keep replying after you send 1 message.
+  * Now, try creating a new thread everytime a new user connects.  Can you have multiple users connected at once this way?  Making this work is very difficult.
+
 For more information, look at http://web.mit.edu/6.005/www/sp10/labs/lab3/lab.html.
