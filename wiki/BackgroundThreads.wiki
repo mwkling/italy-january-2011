@@ -131,7 +131,7 @@ public class ImageSpace extends Canvas {
   * Now, in *Main*, we need to add the ImageSpace.  First, add the space to the class:
 {{{
 private static ImageSpace img;
-	private static String url = "http://bassemk.files.wordpress.com/2009/12/landscape-fall-creek-falls-and-snake-river-idaho.jpg";
+private static String url = "http://bassemk.files.wordpress.com/2009/12/landscape-fall-creek-falls-and-snake-river-idaho.jpg";
 }}}
 
   * Then, add the ImageSpace to the frame using the code below:
@@ -142,9 +142,9 @@ f.add(img);
   * Now, in the ButtonHandler, we will load the image and display it.  The call to 'loadImage' gets the picture from the Internet.  The call to 'repaint' will display the Image in the window.  Paste the following lines into the Button ActionListener:
 {{{
 try{
-					img.loadImage();
-					img.repaint();
-				} catch (Exception e) {}
+	img.loadImage();
+	img.repaint();
+} catch (Exception e) {}
 }}}
   * Run the program, and click the button.  *Wait* for the image to load.  What happens to the colors?
   * Again, we want to load the image in the background.  Create a new class called *BackgroundLoad*.  Paste the following code:
