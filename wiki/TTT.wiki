@@ -86,7 +86,18 @@ public class TTT extends Frame{
 {{{
 if((squares[0].getLabel()==squares[1].getLabel() && squares[1].getLabel()==squares[2].getLabel() && squares[0].getLabel()!="")){
 // A player won in the top row.
+// Put the code for winning here:
+
+///////////////////////////////
 }
+if((squares[0].getLabel()==squares[1].getLabel() && squares[1].getLabel()==squares[2].getLabel() && squares[0].getLabel()!="")){
+// A player won in the top row.
+// Put the code for winning here:
+
+///////////////////////////////
+}
+
+// Copy these again, for other ways of winning...
 }}}
   * Add the needed code, using *OR*, to check if a player has won in any of the 8 possible places.
   * Use a JOptionPane to show a pop up window when a player has won.  You can do this as:
