@@ -171,3 +171,6 @@ public class BackgroundLoad implements Runnable {
 new Thread(new BackgroundLoad(img)).start();
 }}}
   * Run the program once more.  Click the button, and *wait* for the image to load.  What happens to the colors?
+===Part 3===
+  * Now, look on the web for different images (they must be JPG).  Add these images to the window.
+  * Change the program, so it *asks* the user for the URL of an Image, then displays it.
