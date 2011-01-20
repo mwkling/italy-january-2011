@@ -90,7 +90,7 @@ if((squares[0].getLabel()==squares[1].getLabel() && squares[1].getLabel()==squar
 
 ///////////////////////////////
 }
-if((squares[0].getLabel()==squares[1].getLabel() && squares[1].getLabel()==squares[2].getLabel() && squares[0].getLabel()!="")){
+if((squares[3].getLabel()==squares[4].getLabel() && squares[4].getLabel()==squares[5].getLabel() && squares[3].getLabel()!="")){
 // A player won in the top row.
 // Put the code for winning here:
 
@@ -98,6 +98,11 @@ if((squares[0].getLabel()==squares[1].getLabel() && squares[1].getLabel()==squar
 }
 
 // Copy these again, for other ways of winning...
+// Remember, the board looks like:
+// 0 1 2
+// 3 4 5
+// 6 7 8
+///////////
 }}}
   * Add the needed code, using *OR*, to check if a player has won in any of the 8 possible places.
   * Use a JOptionPane to show a pop up window when a player has won.  You can do this as:
