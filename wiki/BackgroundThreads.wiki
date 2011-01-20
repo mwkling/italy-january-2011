@@ -18,9 +18,6 @@ import java.net.MalformedURLException;
 
 import javax.imageio.ImageIO;
 
-/**
- * This class demonstrates how to load an Image from an external file
- */
 public class Main extends Component {	
 	public static void main(String[] args) throws Exception {
         Frame f = new Frame("Thread Sample");
@@ -92,4 +89,85 @@ public class BackgroundMath implements Runnable {
 new Thread(new BackgroundMath()).start();
 }}}
   * This code starts a new thread to execute the math in the background.  Now try running the program.  Click the button.  What happens to the colors?
+
 ===Part 2: Loading Image in the background===
+  * Now, instead of doing math, we will download an Image from the internet to display.
+  * Delete the Thread code from *Main*.
+  * Create a new class called *ImageSpace* and paste the following code:
+{{{
+import java.awt.Canvas;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import javax.imageio.ImageIO;
+
+
+public class ImageSpace extends Canvas {
+
+	BufferedImage img;
+	String url;
+	int width, height;
+	
+	public void paint(Graphics g){
+		g.drawImage(img, 0, 0, 300, 300, 0, 0, width, height, null);
+	}
+	
+	public ImageSpace(String s, int width, int height) throws MalformedURLException, IOException
+	{
+		this.width = width;
+		this.height = height;
+		url = s;
+	}
+	public void loadImage() throws Exception{
+		img = ImageIO.read(new URL(url));
+	}
+}
+
+}}}
+  * An *ImageSpace* is used to display an Image, from the Internet.
+  * Now, in *Main*, we need to add the ImageSpace.  First, add the space to the class:
+{{{
+private static ImageSpace img;
+	private static String url = "http://bassemk.files.wordpress.com/2009/12/landscape-fall-creek-falls-and-snake-river-idaho.jpg";
+}}}
+
+  * Then, add the ImageSpace to the frame using the code below:
+{{{
+img = new ImageSpace(url, 1000, 1000);
+f.add(img);
+}}}
+  * Now, in the ButtonHandler, we will load the image and display it.  The call to 'loadImage' gets the picture from the Internet.  The call to 'repaint' will display the Image in the window.  Paste the following lines into the Button ActionListener:
+{{{
+try{
+					img.loadImage();
+					img.repaint();
+				} catch (Exception e) {}
+}}}
+  * Run the program, and click the button.  *Wait* for the image to load.  What happens to the colors?
+  * Again, we want to load the image in the background.  Create a new class called *BackgroundLoad*.  Paste the following code:
+{{{
+public class BackgroundLoad implements Runnable {
+
+	ImageSpace image;
+	
+	@Override
+	public void run() {
+                // 'loadImage' and 'repaint' here:
+
+	}
+	
+	public BackgroundLoad(ImageSpace i){
+		this.image = i;
+	}
+}
+
+}}}
+  * Now, in the 'run' method, call 'loadImage' and 'repaint', using image.
+  * As before, *delete* the code from the button handler.  Replace with a new thread, to load in the background:
+{{{
+new Thread(new BackgroundLoad(img)).start();
+}}}
+  * Run the program once more.  Click the button, and *wait* for the image to load.  What happens to the colors?
