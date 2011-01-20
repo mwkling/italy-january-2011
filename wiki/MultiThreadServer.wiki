@@ -1,0 +1,113 @@
+  * Last time, we created a Server that could connect to 1 Client at a time.  Now, we look at a server that uses Threads.
+  * *First, make sure you have done the Client part of ServerClient from last class*
+  * Now, create a new Java Project.
+  * Create a new class called *Main*.  In *Main* put the following code:
+{{{
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+
+public class Main {
+	public static void main(String[] args){
+		ServerSocket serverSocket = null;
+		try {
+			serverSocket = new ServerSocket(4444);
+		} catch (IOException e) {
+			System.err.println("Could not listen on port: 4444.");
+			System.exit(1);
+		}
+		
+		System.out.println("Accepting connections...");
+		
+		while(true){
+			Socket socket = null;
+			try {
+				socket = serverSocket.accept();
+				System.out.println("Received connection.");
+				// Create new thread here:
+				
+				/////////////////
+			} catch (IOException e) {
+				System.err.println("Accept failed.");
+				System.exit(1);
+			}
+		}
+		
+	}
+}
+
+}}}
+
+  * What does the *while(true)* loop do?  Why do we need it to connect to multiple users?
+  * When a user connects, we will create a new Thread.  To help with this, create a new class, called *OneConnection*.  Paste the following code:
+{{{
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+
+
+public class OneConnection implements Runnable {
+	Socket socket;
+	
+	@Override
+	public void run() {
+		BufferedReader reader = null;
+		PrintWriter writer = null;
+		try{
+			// Create reader and writer, connect them to socket.
+			reader = new BufferedReader(new InputStreamReader(socket
+					.getInputStream()));
+			writer = new PrintWriter(socket.getOutputStream(), true);
+	
+			// Acknowledge connection.
+			writer.append("Connected to server. Type a line of input followed by the ENTER key.");
+			writer.append(System.getProperty("line.separator"));
+			writer.flush();
+			
+			while(socket.isConnected()){
+				// Read the first line.
+				String line = reader.readLine();
+				
+				System.out.println("Got message: " + line);
+				// Terminate connection if user types 'close':
+				
+				////////////////////////////
+				// Echo the first line.
+				writer.println("You said: " + line);
+			}
+			
+		}catch(Exception e){
+		}finally{
+			try{
+				// Close streams, socket and socket server.
+				writer.println("Closing connection... ");
+				writer.flush();
+				reader.close();
+				writer.close();
+				socket.close();
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+	}
+	public OneConnection(Socket s){
+		this.socket = s;
+	}
+}
+
+}}}
+
+  * Look at the constructor.  Why do we need the Socket?
+  * Now, in Main, we must create a new Thread when a user connects.  Use this code:
+{{{
+new Thread(new OneConnection(socket)).start();
+}}}
+  * Now, you should be able to run the server.  Run the server, and run the Client from last class.  Test that you can type to the Server.
+  * Now, run a 2nd client.  Can it connect?
+  * Run a server on one computer, and connect to someone elses computer.  To do this, use 'ipconfig /all' to find the IP address of the server.  Then, change 'localhost' in the Client to this IP address.
+===Part 2===
+  * Now, we can turn this program into a complete chat program.
+  * Change the server, so when a user types 'close', they disconnect.
+  
