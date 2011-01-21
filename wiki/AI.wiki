@@ -1,0 +1,3 @@
+  * First, go to http://alice.pandorabots.com/ and try chatting with the robot.
+  * How can you be sure it is not a human?
+  * Try to make the robot say the same thing more than once.
