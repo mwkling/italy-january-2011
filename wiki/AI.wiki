@@ -169,9 +169,9 @@ def game():
 
 }}}
   * Run the program.  To play, type the number of the square you want to play on.  Remember the squares are numbered:
-1 2 3
-4 5 6 
-7 8 9
+  * 1 2 3
+  * 4 5 6 
+  * 7 8 9
   * Can you beat the random player often?
   * Now, in the code where it says CHANGE, change the line to:
 {{{
