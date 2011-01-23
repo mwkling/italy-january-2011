@@ -91,3 +91,85 @@ g2.setColor(Color.RED);
 g2.rotate(.1);  // This should be a small number.
 }}}
   * Combine different shapes and colors to create an interesting image.
+
+===Part 2: Snake Game===
+  * Now, create a new class, called *SnakeCanvas*.  Paste this code:
+{{{
+import java.awt.Canvas;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
+public class SnakeCanvas extends Canvas implements KeyListener {
+
+	int x, y;
+	int xdir;
+	int ydir;
+	
+	public SnakeCanvas(){
+		x = 50;
+		y = 50;
+		xdir = 1;  // headed in xdir
+		ydir = 0;  // 
+		this.addKeyListener(this);
+	}
+	
+	public void update(Graphics g){
+		Graphics2D g2 = (Graphics2D)g;
+		x += xdir;
+		y += ydir;
+		g2.fillRect(x, y, 1, 1);
+	}
+	
+	@Override
+	public void keyPressed(KeyEvent e) {
+                // CHANGE key code here:
+		int keyCode = e.getKeyCode();
+		switch(keyCode){
+		case 37:  // Left
+			break;
+		case 38:  // Up
+			break;
+		case 39:  // Right
+			break;
+		case 40:  // Down
+			break;
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent arg0){	} 
+	@Override
+	public void keyTyped(KeyEvent arg0) { }
+
+}
+}}}
+
+  * To add the canvas, we most go to *ShapesDemo*.  *Delete* the *ShapeCanvas*.
+  * Now, add a *SnakeCanvas*:
+{{{
+private static SnakeCanvas snake;
+}}}
+  * Add the SnakeCanvas to the window using:
+{{{
+snake = new SnakeCanvas();
+window.add(snake);
+}}}
+  * Lastly, to make the snake move, we must add a Loop to update the snake.  Add this loop to *main*:
+{{{
+while(true){
+			try {Thread.sleep(60);} catch (Exception e) {}
+			snake.repaint();
+		}
+}}}
+  * Try running the program now.  Do you see the snake moving?  Can you change the direction of the snake?
+  * To change the snake direction, look at the *keyPressed* method in *SnakeCanvas*.  In the *switch* block, change the x and y directions when a key is pressed.  For example:
+{{{
+case 37:
+			xdir = -1;
+			ydir = 0;
+			break;
+// Also change the other 3!
+}}}
+  * When you run the program, make sure you *CLICK IN THE WINDOW* then try pressing the arrow keys to change directions.
