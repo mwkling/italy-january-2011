@@ -1,0 +1,90 @@
+===Part 1: Shapes===
+  * To start, create a new Java Project.  Create a new class, called *ShapesDemo*, and paste the following code:
+
+{{{
+import java.awt.Frame;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+
+public class ShapesDemo {
+	
+	private static Frame window;
+	
+	public ShapesDemo(){
+		window = new Frame("Shapes Demo");
+		window.setSize(300, 300);
+
+                // ADD shapes canvas here:
+
+                /////////////////////////////
+		
+		// Need this code to close the window
+		window.addWindowListener(new WindowAdapter(){
+			public void windowClosing(WindowEvent e){
+				window.setVisible(false); window.dispose(); System.exit(0);
+			}
+		});
+		window.setVisible(true);
+	}
+	
+	
+	public static void main(String[] args) throws InterruptedException{
+		ShapesDemo window = new ShapesDemo();
+	}
+}
+}}}
+
+  * This is a basic class for creating an empty window.  Now, create a new class, called *ShapeCanvas* and paste the following code:
+{{{
+import java.awt.Canvas;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+
+public class ShapeCanvas extends Canvas{
+	
+	public void paint(Graphics g){
+		Graphics2D g2 = (Graphics2D)g;
+		g2.drawLine(100, 100, 200, 200);
+	}
+	
+}
+}}}
+
+  * Now, in *ShapesDemo*, we can add this Canvas, using this code:
+{{{
+ShapeCanvas shapes = new ShapeCanvas();
+window.add(shapes);
+}}}
+
+  * *Run* the program.  You should see a line on the screen.  Try changing the position of the line.  Using g2.drawLine, you can add other lines.
+  * Try adding a rectangle.  Use:
+{{{
+g2.drawRect(x, y, width, height);
+}}}
+  * Also try:
+{{{
+g2.drawOval(x, y, width, height);
+g2.drawString("Hello", x, y);
+// You can try g2.fillRect, g2.fillOval, g2.drawArc
+}}}
+
+  * To draw other polygons, you must create an array of points.  A triangle example is:
+{{{
+int[] xcoords = {50, 50, 75};
+int[] ycoords = {50, 75, 30};
+g2.drawPolygon(new Polygon(xcoords, ycoords, 3));
+}}}
+
+  * Try drawing a shape with 5 sides, or more.
+  * To change colors, use:
+{{{
+g2.setColor(Color.RED);
+}}}
+  * You can change RED to other colors, like BLUE or GREEN.
+  * Try rotating the image, by adding:
+{{{
+g2.rotate(.1);  // This should be a small number.
+}}}
+  * Combine different shapes and colors to create an interesting image.
