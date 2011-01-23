@@ -91,6 +91,7 @@ g2.setColor(Color.RED);
 g2.rotate(.1);  // This should be a small number.
 }}}
   * Combine different shapes and colors to create an interesting image.
+  * For more information look at: http://en.wikibooks.org/wiki/Java_Programming/Graphics/Drawing_shapes
 
 ===Part 2: Snake Game===
   * Now, create a new class, called *SnakeCanvas*.  Paste this code:
@@ -183,8 +184,36 @@ if(x > 300 || y>300 || x<0 || y<0){
                         // You could show a Message here:
 		}
 }}}
-  * To see if the snake has hit itself is more difficult.  You must keep track of all the squares the snake has been to.
-
+  * Run the program, and try letting the line go off the screen.  What happens?
+  * To see if the snake has hit itself is more difficult.  You must keep track of all the squares the snake has been to, and each time you update, you must check if the new square is the same as one of the ones you have visited before.
+  * To add the list, you can use this code:
+{{{
+private List<Point> visited = new ArrayList();
+}}}
+  * In the SnakeCanvas update method, we can add a loop, to see if any of the points in the list of visited points is the same as the point we are at now.  We must also add the new point to the list:
+{{{
+for(int i=0; i<visited.size(); i++)
+			if(visited.get(i).x==x && visited.get(i).y==y)
+			{
+				// Player has lost.
+				x = 50;
+				y = 50;
+				g2.clearRect(0, 0, 300, 300);
+				visited.clear();
+				return;
+			}
+		
+		visited.add(new Point(x, y));
+}}}
+  * Try running the program now, and let the snake hit itself.  What happens?
+ * Finally, to make the snake not grow indefinitely, we can erase the end of the snake.  To do this, we remove the oldest element of the visited list, and erase it:
+{{{
+if(visited.size()>100){
+			Point last = visited.remove(0);
+			g2.clearRect(last.x, last.y, 1, 1);
+		}
+}}}
+  * How can you make the game faster or slower?  How can you change the length of the snake?
 
 
 ===Part 3: More Shapes===
