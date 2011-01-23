@@ -166,10 +166,27 @@ while(true){
   * Try running the program now.  Do you see the snake moving?  Can you change the direction of the snake?
   * To change the snake direction, look at the *keyPressed* method in *SnakeCanvas*.  In the *switch* block, change the x and y directions when a key is pressed.  For example:
 {{{
-case 37:
+case 37:  // Left
 	xdir = -1;
 	ydir = 0;
 	break;
 // Also change the other 3!
 }}}
   * When you run the program, make sure you *CLICK IN THE WINDOW* then try pressing the arrow keys to change directions.
+  * To check if the snake has gone of the screen, you can add to the *update* method in *SnakeCanvas*.
+{{{
+// If off the screen, reset the game:
+if(x > 300 || y>300 || x<0 || y<0){
+			x = 50;
+			y = 50;
+			g2.clearRect(0, 0, 300, 300);
+                        // You could show a Message here:
+		}
+}}}
+  * To see if the snake has hit itself is more difficult.  You must keep track of all the squares the snake has been to.
+
+
+
+===Part 3: More Shapes===
+  * Using the same approach as the snake game, try to use the Arrow Keys to move a shape from Part 1 around on the screen.
+  * Make a character, from different shapes (head, legs, arms).  Use the arrow keys to move the character on the screen.  
