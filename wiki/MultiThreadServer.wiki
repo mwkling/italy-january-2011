@@ -113,8 +113,21 @@ new Thread(new OneConnection(socket)).start();
   * If we have two Clients connected, we want to send messages from one Client to the other client.  Change the server, so that when 1 client sends messages, it is then sent to all the other users.
   * This is difficult.  One way to do this is add an array, with all the connections, to Main:
 {{{
+public static int cur = 0;
 public static Socket[] connections = new Socket[10];
 }}}
-  * Now, in Main, put the socket in the array, whenever we make a new connection.
+  * Now, in Main, put the socket in the array, whenever we make a new connection.  Also, increment cur, so the next user goes in the next space in the array.
+{{{
+// This goes in the main while loop, before making the Thread:
+connections[cur] = socket;
+cur++;
+}}}
   * In OneConnection, change the writer code, so that it loops through every Socket in the Main array, and writes to all of them.
-  
+{{{
+for(int i=0; i<Main.cur; i++){
+					writer = new PrintWriter(Main.connections[i].getOutputStream(), true);
+					writer.println("said: " + line);
+				}
+}}}
+  * Try connecting multiple users at the same time.  If you send a message, can the other user immediately see it?  Why not?
+  * Lastly, the client needs to have a separate thread to listen for new messages.
