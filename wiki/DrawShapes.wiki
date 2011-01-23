@@ -159,17 +159,17 @@ window.add(snake);
   * Lastly, to make the snake move, we must add a Loop to update the snake.  Add this loop to *main*:
 {{{
 while(true){
-			try {Thread.sleep(60);} catch (Exception e) {}
-			snake.repaint();
-		}
+	try {Thread.sleep(60);} catch (Exception e) {}
+	snake.repaint();
+}
 }}}
   * Try running the program now.  Do you see the snake moving?  Can you change the direction of the snake?
   * To change the snake direction, look at the *keyPressed* method in *SnakeCanvas*.  In the *switch* block, change the x and y directions when a key is pressed.  For example:
 {{{
 case 37:
-			xdir = -1;
-			ydir = 0;
-			break;
+	xdir = -1;
+	ydir = 0;
+	break;
 // Also change the other 3!
 }}}
   * When you run the program, make sure you *CLICK IN THE WINDOW* then try pressing the arrow keys to change directions.
