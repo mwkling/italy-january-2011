@@ -131,3 +131,81 @@ for(int i=0; i<Main.cur; i++){
 }}}
   * Try connecting multiple users at the same time.  If you send a message, can the other user immediately see it?  Why not?
   * Lastly, the client needs to have a separate thread to listen for new messages.
+  * To do so, try using the modified client below:
+{{{
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
+public class ChatClientMain {
+
+	private Socket friendlySocket;
+	private PrintWriter out;
+	private BufferedReader in;
+
+	String hostName;
+	int port;
+
+	private static ChatClientMain client;
+	
+	public ChatClientMain() throws IOException, UnknownHostException {
+		this("localhost", 4444);
+	}
+
+	public ChatClientMain(String hostName, int port) throws IOException {
+		this.hostName = hostName;
+		this.port = port;
+
+		friendlySocket = new Socket(hostName, port);
+		out = new PrintWriter(friendlySocket.getOutputStream(), true);
+		in = new BufferedReader(new InputStreamReader(friendlySocket.getInputStream()));
+	}
+
+	public void writeLine(String input) {
+		out.println(input);
+	}
+
+	public String readLine() throws IOException {
+		return in.readLine();
+	}
+
+	public boolean canRead() throws IOException {
+		return in.ready();
+	}
+
+	public void close() throws IOException {
+		out.close();
+		in.close();
+		friendlySocket.close();
+	}
+	public static void main(String[] args) throws Exception {
+		client = new ChatClientMain();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		
+		new Thread(new InListen()).start();
+		
+		while(true){
+			String line = reader.readLine();
+			client.writeLine(line);
+		}
+	}
+	private static class InListen implements Runnable{
+		@Override
+		public void run() {
+			while(true){
+				try{
+				if(client.canRead()){
+					System.out.println(client.readLine());
+				}
+				}catch(Exception e){}
+			}
+		}
+		
+	}
+	
+}
+  * Try starting a server and connecting multiple clients again.  Are you able to chat successfully?
+}}}
