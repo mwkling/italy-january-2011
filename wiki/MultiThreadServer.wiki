@@ -207,5 +207,5 @@ public class ChatClientMain {
 	}
 	
 }
-  * Try starting a server and connecting multiple clients again.  Are you able to chat successfully?
 }}}
+  * Try starting a server and connecting multiple clients again.  Are you able to chat successfully?
