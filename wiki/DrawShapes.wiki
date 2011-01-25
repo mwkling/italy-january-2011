@@ -291,19 +291,6 @@ public class PongCanvas extends Canvas implements KeyListener {
 			ydir = -1;
 		}
 		
-		if(ballx==25 && bally>=player1 && bally <= player1+25)xdir = 1;
-		
-		
-		// Players Lose here
-		if(ballx<0) {
-			// Player 1 loses
-			xdir = 1;
-		}
-		if(ballx>300) {
-			// Player 2 loses
-			xdir = -1;
-		}
-		
 		// Draw ball, and two paddles
 		g2.fillRect(ballx, bally, 2, 2);
 		
@@ -317,10 +304,10 @@ public class PongCanvas extends Canvas implements KeyListener {
 		int keyCode = e.getKeyCode();
 		switch(keyCode){
 		case 38:  // UP
-			player1 -=5;
+
 			break;
 		case 40:  // DOWN
-			player1 +=5;
+
 			break;
 		}
 		
@@ -355,10 +342,36 @@ window.add(pong);
   * Lastly, to make the ball move, we must change the Loop to update the snake.  Change *snake*->*pong*:
 {{{
 while(true){
-	try {Thread.sleep(60);} catch (Exception e) {}
+	try {Thread.sleep(20);} catch (Exception e) {}
 	pong.repaint();
 }
 }}}
+
+  * First, we must add code for moving the paddles.  In *keyPressed*, change the *player1* and *player2* variables when a key is pressed.  You can use:
+{{{
+player1 = player1+5;
+}}}
+  * and other similar code.  Next, we must check if the player's lose.  Add this code to the *update* method:
+{{{
+// Players Lose here
+		if(ballx<0) {
+			// Player 1 loses
+		
+		}
+		if(ballx>300) {
+			// Player 2 loses
+		
+		}
+}}}
+  * Inside the if, reset the variables to their original values if one of the players has lost.
+  * Lastly, we must check if the ball hits a paddle.  We can do that in update, for player 1 as:
+{{{
+if(ballx==25 && bally>=player1 && bally <= player1+25){
+	xdir = 1;
+}
+}}}
+  * Try to add the check for player 2.
+
 ===Part 3: More Shapes===
   * Using the same approach as the snake game, try to use the Arrow Keys to move a shape from Part 1 around on the screen.
   * Make a character, from different shapes (head, legs, arms).  Use the arrow keys to move the character on the screen.  
