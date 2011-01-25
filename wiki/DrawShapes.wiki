@@ -214,8 +214,151 @@ if(visited.size()>100){
 		}
 }}}
   * How can you make the game faster or slower?  How can you change the length of the snake?
+----
+New from last class:
+ * Now, we can work on making fruit for the snake to eat.  To do this, try adding variables to the SnakeCanvas class:
+{{{
+private int length = 100;
+private int applex = 10;
+private int appley = 10;
+}}}
+When you lose, you must reset the length to be 100 (or something else) again.  Change the length testing line to use this variable:
+{{{
+// Delete this
+if(visited.size()>100){
+// Replace with this
+if(visited.size()>length){
+}}}
+
+ * In the *update* method of *SnakeCanvas*, we can add code for generating an apple.  
+{{{
+if(x==applex && y == appley){
+	applex = (int)(Math.random()*300);
+	appley = (int)(Math.random()*300);
+        length += 25;
+}
+g2.fillRect(applex, appley, 1, 1);
+}}}
+
+  * Try running this.  The apples will only be 1 pixel large.  How can you make them bigger?
 
 
+===Part 3: Pong===
+  * Like snake, we must create a new class, called PongCanvas.  Paste the following code:
+{{{
+import java.awt.Canvas;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
+
+public class PongCanvas extends Canvas implements KeyListener {
+	
+	int ballx;
+	int bally;
+	
+	int player1;
+	int player2;
+	
+	int xdir;
+	int ydir;
+	
+	public PongCanvas(){
+		ballx = 170;
+		bally = 250;
+		
+		player1 = 150;
+		player2 = 150;
+		
+		xdir = 1;
+		ydir = 1;
+		this.addKeyListener(this);
+	}
+	
+	public void update(Graphics g){
+		super.update(g);
+		Graphics2D g2 = (Graphics2D)g;
+		ballx += xdir;
+		bally += ydir;
+		
+		if(bally<0){
+			// Hit the top
+			ydir = 1;
+		}
+		if(bally>300) {
+			// Hit the bottom
+			ydir = -1;
+		}
+		
+		if(ballx==25 && bally>=player1 && bally <= player1+25)xdir = 1;
+		
+		
+		// Players Lose here
+		if(ballx<0) {
+			// Player 1 loses
+			xdir = 1;
+		}
+		if(ballx>300) {
+			// Player 2 loses
+			xdir = -1;
+		}
+		
+		// Draw ball, and two paddles
+		g2.fillRect(ballx, bally, 2, 2);
+		
+		g2.fillRect(25, player1, 2, 25);
+		g2.fillRect(275, player2, 2, 25);
+	}
+	
+	
+	@Override
+	public void keyPressed(KeyEvent e) {
+		int keyCode = e.getKeyCode();
+		switch(keyCode){
+		case 38:  // UP
+			player1 -=5;
+			break;
+		case 40:  // DOWN
+			player1 +=5;
+			break;
+		}
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}
+
+}}}
+
+  * To add the canvas, we most go to *ShapesDemo*.  *Delete* the *ShapeCanvas*.
+  * Now, add a *PongCanvas*:
+{{{
+private static PongCanvas pong;
+}}}
+  * Add the PongCanvas to the window using:
+{{{
+pong = new PongCanvas();
+window.add(pong);
+}}}
+  * Lastly, to make the ball move, we must change the Loop to update the snake.  Change *snake*->*pong*:
+{{{
+while(true){
+	try {Thread.sleep(60);} catch (Exception e) {}
+	pong.repaint();
+}
+}}}
 ===Part 3: More Shapes===
   * Using the same approach as the snake game, try to use the Arrow Keys to move a shape from Part 1 around on the screen.
   * Make a character, from different shapes (head, legs, arms).  Use the arrow keys to move the character on the screen.  
