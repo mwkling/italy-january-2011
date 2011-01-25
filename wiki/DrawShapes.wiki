@@ -13,7 +13,7 @@ public class ShapesDemo {
 	
 	public ShapesDemo(){
 		window = new Frame("Shapes Demo");
-		window.setSize(300, 300);
+		window.setSize(320, 340);
 
                 // ADD shapes canvas here:
 
