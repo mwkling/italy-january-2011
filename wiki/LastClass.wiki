@@ -1,0 +1,110 @@
+===Part 1===
+  * First, you can work on a chatting robot.  Copy the code below into a new class called *ChatMain*.
+{{{
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+
+// Credits to: http://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-005-elements-of-software-construction-fall-2008/labs-and-projects/
+public class ChatMain {
+
+	private static Map<String, String> responses;
+	private static Map<String, String> questionresponses;
+	
+	public static void main(String[] args) {
+
+		
+		////////////////////////////////////
+		responses = new HashMap();
+
+		
+		questionresponses = new HashMap();
+		
+		
+		String defaultResponse = "Ok.";
+		String defaultQuestionResponse = "Good question, I don't know.";
+		////////////////////////////////////
+		
+		
+		
+		// Used to read the lines.
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
+		System.out.println("Hello!");
+		try {
+			String line = reader.readLine();
+
+			while (line != null) { 
+				line = line.toLowerCase();
+				if (line.startsWith("bye")) {
+					System.out.println("Goodbye.");
+					break;
+				}
+
+				if (line.endsWith("?")) {
+					boolean found = false;
+					Iterator i = questionresponses.keySet().iterator();
+					while(i.hasNext()){
+						String current = (String) i.next();
+						if(line.contains(current)){
+							System.out.println(questionresponses.get(current));
+							found = true;
+							break;
+						}
+					}
+					if(!found){
+						System.out.println(defaultQuestionResponse);	
+					}
+				} else {
+					boolean found = false;
+					Iterator i = responses.keySet().iterator();
+					while(i.hasNext()){
+						String current = (String) i.next();
+						if(line.contains(current)){
+							System.out.println(responses.get(current));
+							found = true;
+							break;
+						}
+					}
+					if(!found){
+						System.out.println(defaultResponse);	
+					}
+				}
+
+				// Read next line.
+				line = reader.readLine();
+			}
+
+		} catch (IOException e) {
+			System.out.println("I/O error: " + e.getMessage());
+			System.exit(1);
+		}
+	}
+}
+}}}
+
+  * Now, you can *RUN* and try to chat.  Try typing to the robot:
+  # Hello
+  # How are you?
+  # bye
+  * Add to the robot responses, in main:
+{{{
+responses.put("hello", "How are you?");
+responses.put("old", "Wow, you are very old");
+questionresponses.put("old", "I am 1 week old.");
+}}}
+  * Again, try to write:
+  # Hello
+  # How old are you?
+  # I am 18 years old.
+  * What is the difference between old in the question, and not in the question?
+  * Now, you can add more responses, for different words, or phrases.  For example:
+{{{
+questionresponses.put("play soccer", "I can't play soccer, because I'm a computer");
+}}}
+  * Then write: "Do you like to play soccer?
