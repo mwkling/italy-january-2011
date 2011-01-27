@@ -166,16 +166,18 @@ public static int score(int[] strat1, int[] strat2) {
 if(strat1[i] > strat2[i]){
 	score1 = score1 + 1;
 }
-// add for score2 also
+if(strat1[i] < strat2[i]){
+    // ADD CODE HERE for score2
+}
 }}}
   * Now, *delete* the code in main, and add instead:
 {{{
 int[] strat1 = random_strat();
-		int[] strat2 = random_strat();
+int[] strat2 = random_strat();
 		
-		System.out.println(Arrays.toString(strat1));
-		System.out.println(Arrays.toString(strat2));
-		System.out.println(score(strat1, strat2));
+System.out.println(Arrays.toString(strat1));
+System.out.println(Arrays.toString(strat2));
+System.out.println(score(strat1, strat2));
 }}}
   * You can *run*, then run again, and again, to see the 2 strategies, and the score for player 1.
   * Lastly, we want to generate many strategies.  Delete *main*, and add:
