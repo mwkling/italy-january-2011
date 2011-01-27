@@ -108,3 +108,128 @@ questionresponses.put("old", "I am 1 week old.");
 questionresponses.put("play soccer", "I can't play soccer, because I'm a computer");
 }}}
   * Then write: "Do you like to play soccer?
+  * Now you can add other responses, to the responses and questionresponses.  You can also change:
+  # defaultResponse
+  # defaultQuestionResponse
+
+===Part 2===
+  * We can write a program to make random strategies, and play the castle game.  Make a new class called *RandBlotto*.
+  *First, add the method below, to generate a random strategy.
+{{{
+private static Random r = new Random(System.currentTimeMillis());
+	public static int[] random_strat()
+	{
+		int[] rands = new int[9];
+		for(int i=0; i<9; i++){
+			rands[i] = r.nextInt(100);
+		}
+		Arrays.sort(rands);
+		int[] result = new int[10];
+		result[0] = rands[0];
+		
+		for(int i = 0; i<8; i++){
+			result[i+1] = rands[i+1]-rands[i];
+		}
+		result[9] = 100-rands[8];
+		
+		return result;
+	}
+}}}
+  * Now, in *main*, we can add this line:
+{{{
+System.out.println(Arrays.toString(random_strat()));
+}}}
+  * Run the program to see a list of 10 numbers, randomly generated.
+  * Next, we need to generate 2 strategies, and play them against eachother.  Add this method:
+{{{
+public static int score(int[] strat1, int[] strat2) {
+		int score1 = 0;
+		int score2 = 0;
+		
+		// Loop through two arrays to get scores.
+		for(int i =0; i<10; i++){
+                     // ADD CODE HERE:
+
+		}
+		
+		if(score1>score2){
+			return 2;
+		}
+		if(score2>score1){
+			return 0;
+		}
+		return 1;
+	}
+}}}
+  * Look at *ADD CODE HERE*.  This loop should add to the scores for each player.  For example:
+{{{
+if(strat1[i] > strat2[i]){
+	score1 = score1 + 1;
+}
+// add for score2 also
+}}}
+  * Now, *delete* the code in main, and add instead:
+{{{
+int[] strat1 = random_strat();
+		int[] strat2 = random_strat();
+		
+		System.out.println(Arrays.toString(strat1));
+		System.out.println(Arrays.toString(strat2));
+		System.out.println(score(strat1, strat2));
+}}}
+  * You can *run*, then run again, and again, to see the 2 strategies, and the score for player 1.
+  * Lastly, we want to generate many strategies.  Delete *main*, and add:
+{{{
+private static List<Strategy> strats = new ArrayList();
+	
+	private static class Strategy {
+		public int[] positions;
+		public int score;
+	}
+	
+	public static void main(String[] args) throws Exception {
+		final int NUMSTRATS = 100;
+		
+		for(int i = 0; i<NUMSTRATS; i++){
+			Strategy s = new Strategy();
+			s.positions = random_strat();
+			s.score = 0;
+			strats.add(s);
+		}
+		
+		for(int i=0; i<NUMSTRATS; i++){
+			for(int j=i+1; j<NUMSTRATS; j++){
+				int score = score(strats.get(i).positions, strats.get(j).positions);
+				strats.get(i).score += score;
+				strats.get(j).score += (2-score);
+			}
+		}
+		
+		Collections.sort(strats, new Comparator<Strategy>(){
+			@Override
+			public int compare(Strategy o1, Strategy o2) {
+				if(o1.score>o2.score) return 1;
+				if(o1.score<o2.score) return -1;
+				return 0;
+			}
+		});
+		
+		for(int i = 0; i<NUMSTRATS; i++){
+			System.out.println("Strategy: " + Arrays.toString(strats.get(i).positions) + " Score: " + strats.get(i).score);
+		}
+		
+
+	}
+}}}
+  * Now, run the program.  You can *change* NUMSTRATS, to make bigger/smaller.  What are the best strategies?
+  * Try to change *score* for the 2nd type of game.  You can use, inside the for loop:
+{{{
+if(strat1[i] > strat2[i]){
+	score1+=i;
+}
+if(strat2[i] > strat1[i]){
+	score2+=i;
+}
+}}}
+
+  * http://www.amsta.leeds.ac.uk/~pmt6jrp/personal/blotto.html
