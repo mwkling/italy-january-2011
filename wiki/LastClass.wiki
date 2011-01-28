@@ -235,3 +235,85 @@ if(strat2[i] > strat1[i]){
 }}}
 
   * http://www.amsta.leeds.ac.uk/~pmt6jrp/personal/blotto.html
+  * PYTHON code here:
+{{{
+import operator
+import random
+
+
+# This function takes 2 strategies, and plays them against eachother.
+# If strat1 winds, return 2
+# If tie (same score), return 1
+# If strat2 wins, return 0
+def score1(strat1, strat2):
+    s1 = 0
+    s2 = 0
+    for i in range(10):
+        if strat1[i]>strat2[i]:
+            s1 = s1 + 1
+        elif strat2[i]>strat1[i]:
+            s2 = s2 + 1
+    if s1>s2:
+        return 2
+    elif s1==s2:
+        return 1
+    else:
+        return 0
+
+def score2(strat1, strat2):
+    s1 = 0
+    s2 = 0
+    for i in range(10):
+        if strat1[i]>strat2[i]:
+            s1 = s1 + (i+1)  # <----- this is different from score1  
+        elif strat2[i]>strat1[i]:
+            s2 = s2 + (i+1)
+    if s1>s2:
+        return 2
+    elif s1==s2:
+        return 1
+    else:
+        return 0
+        
+def randstrat():
+    nums = [random.randint(0, 100) for i in range(9)]
+    nums.sort()
+    res = [nums[0]]
+    for i in range(8):
+        res = res + [nums[i+1]-nums[i]]
+    res = res + [100 - nums[8]]
+    return res
+
+def run_rand():
+    RUNS = 100
+    scores = []
+    for i in range(RUNS):
+        scores = scores +[[0, randstrat()]]
+
+    for i in range(RUNS):
+        for j in range(i+1, RUNS):
+            val = score2(scores[i][1], scores[j][1])
+            scores[i][0] = scores[i][0] + val
+            scores[j][0] = scores[j][0] + (2-val)
+    sortedscores = sorted(scores, key=operator.itemgetter(0))
+    #for i in range(RUNS):
+    #    print sortedscores[i]
+    
+    return sortedscores[90:]
+
+def run_top():
+    RUNS=100
+    scores = []
+    for i in range(10):
+        scores = scores + run_rand()
+
+    for i in range(RUNS):
+        for j in range(i+1, RUNS):
+            val = score2(scores[i][1], scores[j][1])
+            scores[i][0] = scores[i][0] + val
+            scores[j][0] = scores[j][0] + (2-val)
+    sortedscores = sorted(scores, key=operator.itemgetter(0))
+    for i in range(RUNS):
+        print sortedscores[i]
+    
+}}}
