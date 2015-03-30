@@ -1,0 +1,319 @@
+### Part 1 ###
+  * First, you can work on a chatting robot.  Copy the code below into a new class called **ChatMain**.
+```
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+
+// Credits to: http://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-005-elements-of-software-construction-fall-2008/labs-and-projects/
+public class ChatMain {
+
+	private static Map<String, String> responses;
+	private static Map<String, String> questionresponses;
+	
+	public static void main(String[] args) {
+
+		
+		////////////////////////////////////
+		responses = new HashMap();
+
+		
+		questionresponses = new HashMap();
+		
+		
+		String defaultResponse = "Ok.";
+		String defaultQuestionResponse = "Good question, I don't know.";
+		////////////////////////////////////
+		
+		
+		
+		// Used to read the lines.
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
+		System.out.println("Hello!");
+		try {
+			String line = reader.readLine();
+
+			while (line != null) { 
+				line = line.toLowerCase();
+				if (line.startsWith("bye")) {
+					System.out.println("Goodbye.");
+					break;
+				}
+
+				if (line.endsWith("?")) {
+					boolean found = false;
+					Iterator i = questionresponses.keySet().iterator();
+					while(i.hasNext()){
+						String current = (String) i.next();
+						if(line.contains(current)){
+							System.out.println(questionresponses.get(current));
+							found = true;
+							break;
+						}
+					}
+					if(!found){
+						System.out.println(defaultQuestionResponse);	
+					}
+				} else {
+					boolean found = false;
+					Iterator i = responses.keySet().iterator();
+					while(i.hasNext()){
+						String current = (String) i.next();
+						if(line.contains(current)){
+							System.out.println(responses.get(current));
+							found = true;
+							break;
+						}
+					}
+					if(!found){
+						System.out.println(defaultResponse);	
+					}
+				}
+
+				// Read next line.
+				line = reader.readLine();
+			}
+
+		} catch (IOException e) {
+			System.out.println("I/O error: " + e.getMessage());
+			System.exit(1);
+		}
+	}
+}
+```
+
+  * Now, you can **RUN** and try to chat.  Try typing to the robot:
+  1. Hello
+  1. How are you?
+  1. bye
+  * Add to the robot responses, in main:
+```
+responses.put("hello", "How are you?");
+responses.put("old", "Wow, you are very old");
+questionresponses.put("old", "I am 1 week old.");
+```
+  * Again, try to write:
+  1. Hello
+  1. How old are you?
+  1. I am 18 years old.
+  * What is the difference between old in the question, and not in the question?
+  * Now, you can add more responses, for different words, or phrases.  For example:
+```
+questionresponses.put("play soccer", "I can't play soccer, because I'm a computer");
+```
+  * Then write: "Do you like to play soccer?
+  * Now you can add other responses, to the responses and questionresponses.  You can also change:
+  1. defaultResponse
+  1. defaultQuestionResponse
+
+### Part 2 ###
+  * We can write a program to make random strategies, and play the castle game.  Make a new class called **RandBlotto**.
+  * irst, add the method below, to generate a random strategy.
+```
+private static Random r = new Random(System.currentTimeMillis());
+	public static int[] random_strat()
+	{
+		int[] rands = new int[9];
+		for(int i=0; i<9; i++){
+			rands[i] = r.nextInt(100);
+		}
+		Arrays.sort(rands);
+		int[] result = new int[10];
+		result[0] = rands[0];
+		
+		for(int i = 0; i<8; i++){
+			result[i+1] = rands[i+1]-rands[i];
+		}
+		result[9] = 100-rands[8];
+		
+		return result;
+	}
+```
+  * Now, in **main**, we can add this line:
+```
+System.out.println(Arrays.toString(random_strat()));
+```
+  * Run the program to see a list of 10 numbers, randomly generated.
+  * Next, we need to generate 2 strategies, and play them against eachother.  Add this method:
+```
+public static int score(int[] strat1, int[] strat2) {
+		int score1 = 0;
+		int score2 = 0;
+		
+		// Loop through two arrays to get scores.
+		for(int i =0; i<10; i++){
+                     // ADD CODE HERE:
+
+		}
+		
+		if(score1>score2){
+			return 2;
+		}
+		if(score2>score1){
+			return 0;
+		}
+		return 1;
+	}
+```
+  * Look at **ADD CODE HERE**.  This loop should add to the scores for each player.  For example:
+```
+if(strat1[i] > strat2[i]){
+	score1 = score1 + 1;
+}
+if(strat1[i] < strat2[i]){
+    // ADD CODE HERE for score2
+}
+```
+  * Now, **delete** the code in main, and add instead:
+```
+int[] strat1 = random_strat();
+int[] strat2 = random_strat();
+		
+System.out.println(Arrays.toString(strat1));
+System.out.println(Arrays.toString(strat2));
+System.out.println(score(strat1, strat2));
+```
+  * You can **run**, then run again, and again, to see the 2 strategies, and the score for player 1.
+  * Lastly, we want to generate many strategies.  Delete **main**, and add:
+```
+private static List<Strategy> strats = new ArrayList();
+	
+	private static class Strategy {
+		public int[] positions;
+		public int score;
+	}
+	
+	public static void main(String[] args) throws Exception {
+		final int NUMSTRATS = 100;
+		
+		for(int i = 0; i<NUMSTRATS; i++){
+			Strategy s = new Strategy();
+			s.positions = random_strat();
+			s.score = 0;
+			strats.add(s);
+		}
+		
+		for(int i=0; i<NUMSTRATS; i++){
+			for(int j=i+1; j<NUMSTRATS; j++){
+				int score = score(strats.get(i).positions, strats.get(j).positions);
+				strats.get(i).score += score;
+				strats.get(j).score += (2-score);
+			}
+		}
+		
+		Collections.sort(strats, new Comparator<Strategy>(){
+			@Override
+			public int compare(Strategy o1, Strategy o2) {
+				if(o1.score>o2.score) return 1;
+				if(o1.score<o2.score) return -1;
+				return 0;
+			}
+		});
+		
+		for(int i = 0; i<NUMSTRATS; i++){
+			System.out.println("Strategy: " + Arrays.toString(strats.get(i).positions) + " Score: " + strats.get(i).score);
+		}
+		
+
+	}
+```
+  * Now, run the program.  You can **change** NUMSTRATS, to make bigger/smaller.  What are the best strategies?
+  * Try to change **score** for the 2nd type of game.  You can use, inside the for loop:
+```
+if(strat1[i] > strat2[i]){
+	score1+=i;
+}
+if(strat2[i] > strat1[i]){
+	score2+=i;
+}
+```
+
+  * http://www.amsta.leeds.ac.uk/~pmt6jrp/personal/blotto.html
+  * PYTHON code here:
+```
+import operator
+import random
+
+
+# This function takes 2 strategies, and plays them against eachother.
+# If strat1 winds, return 2
+# If tie (same score), return 1
+# If strat2 wins, return 0
+def score1(strat1, strat2):
+    s1 = 0
+    s2 = 0
+    for i in range(10):
+        if strat1[i]>strat2[i]:
+            s1 = s1 + 1
+        elif strat2[i]>strat1[i]:
+            s2 = s2 + 1
+    if s1>s2:
+        return 2
+    elif s1==s2:
+        return 1
+    else:
+        return 0
+
+def score2(strat1, strat2):
+    s1 = 0
+    s2 = 0
+    for i in range(10):
+        if strat1[i]>strat2[i]:
+            s1 = s1 + (i+1)  # <----- this is different from score1  
+        elif strat2[i]>strat1[i]:
+            s2 = s2 + (i+1)
+    if s1>s2:
+        return 2
+    elif s1==s2:
+        return 1
+    else:
+        return 0
+        
+def randstrat():
+    nums = [random.randint(0, 100) for i in range(9)]
+    nums.sort()
+    res = [nums[0]]
+    for i in range(8):
+        res = res + [nums[i+1]-nums[i]]
+    res = res + [100 - nums[8]]
+    return res
+
+def run_rand():
+    RUNS = 100
+    scores = []
+    for i in range(RUNS):
+        scores = scores +[[0, randstrat()]]
+
+    for i in range(RUNS):
+        for j in range(i+1, RUNS):
+            val = score2(scores[i][1], scores[j][1])
+            scores[i][0] = scores[i][0] + val
+            scores[j][0] = scores[j][0] + (2-val)
+    sortedscores = sorted(scores, key=operator.itemgetter(0))
+    #for i in range(RUNS):
+    #    print sortedscores[i]
+    
+    return sortedscores[90:]
+
+def run_top():
+    RUNS=100
+    scores = []
+    for i in range(10):
+        scores = scores + run_rand()
+
+    for i in range(RUNS):
+        for j in range(i+1, RUNS):
+            val = score2(scores[i][1], scores[j][1])
+            scores[i][0] = scores[i][0] + val
+            scores[j][0] = scores[j][0] + (2-val)
+    sortedscores = sorted(scores, key=operator.itemgetter(0))
+    for i in range(RUNS):
+        print sortedscores[i]
+    
+```

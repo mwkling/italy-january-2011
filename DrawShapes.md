@@ -1,0 +1,246 @@
+### Part 1: Shapes ###
+  * To start, create a new Java Project.  Create a new class, called **ShapesDemo**, and paste the following code:
+
+```
+import java.awt.Frame;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+
+public class ShapesDemo {
+	
+	private static Frame window;
+	
+	public ShapesDemo(){
+		window = new Frame("Shapes Demo");
+		window.setSize(320, 340);
+
+                // ADD shapes canvas here:
+
+                /////////////////////////////
+		
+		// Need this code to close the window
+		window.addWindowListener(new WindowAdapter(){
+			public void windowClosing(WindowEvent e){
+				window.setVisible(false); window.dispose(); System.exit(0);
+			}
+		});
+		window.setVisible(true);
+	}
+	
+	
+	public static void main(String[] args) throws InterruptedException{
+		ShapesDemo window = new ShapesDemo();
+	}
+}
+```
+
+  * This is a basic class for creating an empty window.  Now, create a new class, called **ShapeCanvas** and paste the following code:
+```
+import java.awt.Canvas;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+
+public class ShapeCanvas extends Canvas{
+	
+	public void paint(Graphics g){
+		Graphics2D g2 = (Graphics2D)g;
+		g2.drawLine(100, 100, 200, 200);
+                // ADD more shapes here:
+
+                //////////////////////////////
+	}
+	
+}
+```
+
+  * Now, in **ShapesDemo**, we can add this Canvas, using this code:
+```
+ShapeCanvas shapes = new ShapeCanvas();
+window.add(shapes);
+```
+
+  * **Run** the program.  You should see a line on the screen.  Try changing the position of the line.  Using g2.drawLine, you can add other lines.
+  * Try adding a rectangle.  Use:
+```
+g2.drawRect(x, y, width, height);
+```
+  * Also try:
+```
+g2.drawOval(x, y, width, height);
+g2.drawString("Hello", x, y);
+// You can try g2.fillRect, g2.fillOval, g2.drawArc
+```
+
+  * To draw other polygons, you must create an array of points.  A triangle example is:
+```
+int[] xcoords = {50, 50, 75};
+int[] ycoords = {50, 75, 30};
+g2.drawPolygon(new Polygon(xcoords, ycoords, 3));
+```
+
+  * Try drawing a shape with 5 sides, or more.
+  * To change colors, use:
+```
+g2.setColor(Color.RED);
+```
+  * You can change RED to other colors, like BLUE or GREEN.
+  * Try rotating the image, by adding:
+```
+g2.rotate(.1);  // This should be a small number.
+```
+  * Combine different shapes and colors to create an interesting image.
+  * For more information look at: http://en.wikibooks.org/wiki/Java_Programming/Graphics/Drawing_shapes
+
+### Part 2: Snake Game ###
+  * Now, create a new class, called **SnakeCanvas**.  Paste this code:
+```
+import java.awt.Canvas;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
+public class SnakeCanvas extends Canvas implements KeyListener {
+
+	int x, y;
+	int xdir;
+	int ydir;
+	
+	public SnakeCanvas(){
+		x = 50;
+		y = 50;
+		xdir = 1;  // headed in xdir
+		ydir = 0;  // 
+		this.addKeyListener(this);
+	}
+	
+	public void update(Graphics g){
+		Graphics2D g2 = (Graphics2D)g;
+		x += xdir;
+		y += ydir;
+		g2.fillRect(x, y, 1, 1);
+	}
+	
+	@Override
+	public void keyPressed(KeyEvent e) {
+                // CHANGE key code here:
+		int keyCode = e.getKeyCode();
+		switch(keyCode){
+		case 37:  // Left
+			break;
+		case 38:  // Up
+			break;
+		case 39:  // Right
+			break;
+		case 40:  // Down
+			break;
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent arg0){	} 
+	@Override
+	public void keyTyped(KeyEvent arg0) { }
+
+}
+```
+
+  * To add the canvas, we most go to **ShapesDemo**.  **Delete** the **ShapeCanvas**.
+  * Now, add a **SnakeCanvas**:
+```
+private static SnakeCanvas snake;
+```
+  * Add the SnakeCanvas to the window using:
+```
+snake = new SnakeCanvas();
+window.add(snake);
+```
+  * Lastly, to make the snake move, we must add a Loop to update the snake.  Add this loop to **main**:
+```
+while(true){
+	try {Thread.sleep(60);} catch (Exception e) {}
+	snake.repaint();
+}
+```
+  * Try running the program now.  Do you see the snake moving?  Can you change the direction of the snake?
+  * To change the snake direction, look at the **keyPressed** method in **SnakeCanvas**.  In the **switch** block, change the x and y directions when a key is pressed.  For example:
+```
+case 37:  // Left
+	xdir = -1;
+	ydir = 0;
+	break;
+// Also change the other 3!
+```
+  * When you run the program, make sure you **CLICK IN THE WINDOW** then try pressing the arrow keys to change directions.
+  * To check if the snake has gone of the screen, you can add to the **update** method in **SnakeCanvas**.
+```
+// If off the screen, reset the game:
+if(x > 300 || y>300 || x<0 || y<0){
+			x = 50;
+			y = 50;
+			g2.clearRect(0, 0, 300, 300);
+                        // You could show a Message here:
+		}
+```
+  * Run the program, and try letting the line go off the screen.  What happens?
+  * To see if the snake has hit itself is more difficult.  You must keep track of all the squares the snake has been to, and each time you update, you must check if the new square is the same as one of the ones you have visited before.
+  * To add the list, you can use this code:
+```
+private List<Point> visited = new ArrayList();
+```
+  * In the SnakeCanvas update method, we can add a loop, to see if any of the points in the list of visited points is the same as the point we are at now.  We must also add the new point to the list:
+```
+for(int i=0; i<visited.size(); i++)
+			if(visited.get(i).x==x && visited.get(i).y==y)
+			{
+				// Player has lost.
+				x = 50;
+				y = 50;
+				g2.clearRect(0, 0, 300, 300);
+				visited.clear();
+				return;
+			}
+		
+		visited.add(new Point(x, y));
+```
+  * Try running the program now, and let the snake hit itself.  What happens?
+  * Finally, to make the snake not grow indefinitely, we can erase the end of the snake.  To do this, we remove the oldest element of the visited list, and erase it:
+```
+if(visited.size()>100){
+			Point last = visited.remove(0);
+			g2.clearRect(last.x, last.y, 1, 1);
+		}
+```
+    * How can you make the game faster or slower?  How can you change the length of the snake?
+
+---
+
+New from last class:
+  * Now, we can work on making fruit for the snake to eat.  To do this, try adding variables to the SnakeCanvas class:
+```
+private int length = 100;
+private int applex = 10;
+private int appley = 10;
+```
+When you lose, you must reset the length to be 100 (or something else) again.  Change the length testing line to use this variable:
+```
+// Delete this
+if(visited.size()>100){
+// Replace with this
+if(visited.size()>length){
+```
+
+  * In the **update** method of **SnakeCanvas**, we can add code for generating an apple.
+```
+if(x==applex && y == appley){
+	applex = (int)(Math.random()*300);
+	appley = (int)(Math.random()*300);
+        length += 25;
+}
+g2.fillRect(applex, appley, 1, 1);
+```
+
+  * Try running this.  The apples will only be 1 pixel large.  How can you make them bigger?
+

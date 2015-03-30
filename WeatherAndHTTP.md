@@ -1,0 +1,79 @@
+
+```
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+
+// Inspired by:
+// http://download.oracle.com/javase/tutorial/networking/urls/readingWriting.html
+public class Weather {
+	public static void main(String[] args) throws Exception {
+		// Change this string to 
+		String location = "Milan+Italy";
+		
+		// Here, we make the HTTP request to google.
+		URL weather = new URL("http://www.google.com/ig/api?weather=" + location);
+        
+		// Print all the information about this request.
+		System.out.println("protocol = " + weather.getProtocol());
+		System.out.println("authority = " + weather.getAuthority());
+	    System.out.println("host = " + weather.getHost());
+	    System.out.println("port = " + weather.getPort());
+	    System.out.println("path = " + weather.getPath());
+	    System.out.println("query = " + weather.getQuery());
+	    System.out.println("filename = " + weather.getFile());
+	    System.out.println("ref = " + weather.getRef());
+	    System.out.println();
+		
+		// Connects to Google
+		URLConnection weatherConnection = weather.openConnection();
+        BufferedReader in = new BufferedReader(
+                                new InputStreamReader(
+                                weatherConnection.getInputStream()));
+        
+        // Lastly, read the response
+        String inputLine;
+        String response = "";
+        while ((inputLine = in.readLine()) != null) 
+            response += inputLine;
+        in.close();
+        printXML(response);
+	}
+	
+	static private void printXML(String xml){
+		int indent = 0;
+		String current = "";
+		boolean end = false;
+		for(int i=0; i<xml.length(); i++)
+		{
+			char curChar = xml.charAt(i);
+			current += curChar;
+			if(curChar=='<' && xml.charAt(i+1)=='/')
+			{
+				end = true;
+			}
+			if(curChar=='>' && xml.charAt(i-1)=='/'){
+				for(int j=0; j<indent; j++) System.out.print("  ");
+				System.out.println(current);
+				current = "";
+				end = false;
+			}else if(curChar=='>'){
+				if(end) indent--;
+				for(int j=0; j<indent; j++) System.out.print("  ");
+				System.out.println(current);
+				if(!end) indent++;
+				current = "";
+				end = false;
+			}
+		}
+	}
+}
+```
+
+  * Run the program.  What is the weather prediction?
+  * Try changing the city.  Be sure to use a "+" between the city and country.
+  * Try changing the city to "Milan Italy".  What error message do you get?
+  * Now, delete the city, and try a different website.  What is the response you are getting?
+  * Change the website to "http://www.qazxsw21.com/".  What is the response you get now?
+  * For more information on HTTP response codes, look at http://en.wikipedia.org/wiki/List_of_HTTP_status_codes

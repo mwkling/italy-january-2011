@@ -1,0 +1,176 @@
+### Part 1: Math Background ###
+  * Create a new Java project.  Create a new class called **Main**.
+  * Paste the code below into **Main**:
+```
+import java.awt.Button;
+import java.awt.Canvas;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.FlowLayout;
+import java.awt.Frame;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.IOException;
+import java.net.MalformedURLException;
+
+import javax.imageio.ImageIO;
+
+public class Main extends Component {	
+	public static void main(String[] args) throws Exception {
+        Frame f = new Frame("Thread Sample");
+        f.setLayout(new GridLayout());
+        
+        Button button = new Button("START");
+        
+        button.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+	                      // Button listener code:
+
+                              ////////////////////////
+			}
+        });
+        
+        
+        f.add(button);
+        
+        Canvas space = new Canvas();
+        f.add(space);
+               
+        f.addWindowListener(new WindowAdapter(){
+            public void windowClosing(WindowEvent e) {
+                System.exit(0);
+            }
+        });
+        f.setSize(900, 300);
+        f.setVisible(true);
+        
+        // Loop, changing color of canvas randomly.
+        while(true){
+        	space.setBackground(new Color((float)Math.random(), (float)Math.random(), (float)Math.random()));
+        	Thread.sleep(250);
+        }
+        
+        
+    }
+}
+```
+
+  * Try running the program.  You should see a button next to a square.  The color of the square changes 4 times per second.
+  * Now, try adding code to run when you click the button.  Paste the following math code into the button handler:
+```
+double k = 0;
+for(int i=0; i<10000000; i++){
+    k += Math.sin(Math.random()) + Math.log(Math.random());
+}
+System.out.println("Finished with hard math");
+```
+  * Now, run the program.  Press the button.  What happens to the colors?
+  * We want to use a thread to run the math in the background.
+  * Create a new class called **BackgroundMath**.  Paste the following code:
+```
+public class BackgroundMath implements Runnable {
+
+	@Override
+	public void run() {
+		// Put code here:
+                
+                ///////////////////////
+	}
+
+}
+```
+  * Now, inside the run method, put the same code from the button handler.
+  * In the button handler, **delete** the math code.  Instead, replace with code for a new Thread:
+```
+new Thread(new BackgroundMath()).start();
+```
+  * This code starts a new thread to execute the math in the background.  Now try running the program.  Click the button.  What happens to the colors?
+
+### Part 2: Loading Image in the background ###
+  * Now, instead of doing math, we will download an Image from the internet to display.
+  * Delete the Thread code from **Main**.
+  * Create a new class called **ImageSpace** and paste the following code:
+```
+import java.awt.Canvas;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import javax.imageio.ImageIO;
+
+
+public class ImageSpace extends Canvas {
+
+	BufferedImage img;
+	String url;
+	int width, height;
+	
+	public void paint(Graphics g){
+		g.drawImage(img, 0, 0, 300, 300, 0, 0, width, height, null);
+	}
+	
+	public ImageSpace(String s, int width, int height) throws MalformedURLException, IOException
+	{
+		this.width = width;
+		this.height = height;
+		url = s;
+	}
+	public void loadImage() throws Exception{
+		img = ImageIO.read(new URL(url));
+	}
+}
+
+```
+  * An **ImageSpace** is used to display an Image, from the Internet.
+  * Now, in **Main**, we need to add the ImageSpace.  First, add the space to the class:
+```
+private static ImageSpace img;
+private static String url = "http://bassemk.files.wordpress.com/2009/12/landscape-fall-creek-falls-and-snake-river-idaho.jpg";
+```
+
+  * Then, add the ImageSpace to the frame using the code below:
+```
+img = new ImageSpace(url, 1000, 1000);
+f.add(img);
+```
+  * Now, in the ButtonHandler, we will load the image and display it.  The call to 'loadImage' gets the picture from the Internet.  The call to 'repaint' will display the Image in the window.  Paste the following lines into the Button ActionListener:
+```
+try{
+	img.loadImage();
+	img.repaint();
+} catch (Exception e) {}
+```
+  * Run the program, and click the button.  **Wait** for the image to load.  What happens to the colors?
+  * Again, we want to load the image in the background.  Create a new class called **BackgroundLoad**.  Paste the following code:
+```
+public class BackgroundLoad implements Runnable {
+
+	ImageSpace image;
+	
+	@Override
+	public void run() {
+                // 'loadImage' and 'repaint' here:
+
+	}
+	
+	public BackgroundLoad(ImageSpace i){
+		this.image = i;
+	}
+}
+
+```
+  * Now, in the 'run' method, call 'loadImage' and 'repaint', using image.
+  * As before, **delete** the code from the button handler.  Replace with a new thread, to load in the background:
+```
+new Thread(new BackgroundLoad(img)).start();
+```
+  * Run the program once more.  Click the button, and **wait** for the image to load.  What happens to the colors?
+### Part 3 ###
+  * Now, look on the web for different images (they must be JPG).  Add these images to the window.
+  * Change the program, so it **asks** the user for the URL of an Image, then displays it.

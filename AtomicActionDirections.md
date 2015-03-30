@@ -1,0 +1,24 @@
+# Directions #
+  * Create a new Java Project, in Eclipse.
+  * Create 2 new classes, Start and AtomicAction.
+  * Put the code from the AtomicActionCode into these files.
+  * Run the program several times.  Are the results always the same?
+  * An 'X' appears when the values are not equal.  We want to change the program, so the values are always equal, and the 'X' does not appear.
+  * To do this, first add a 'lock' to the class AtomicAction.  It will be:
+```
+public static Object lock = new Object();
+```
+  * Now, we can lock the code using the word "synchronize".  Around the code for reverse() and areEqual, add:
+```
+synchronized(lock){
+// Code here...
+}
+```
+  * This means, if we call areEqual() in the middle of reverse(), we will wait until reverse() has finished.
+  * Run the program again, to see the new result.
+  * Now, delete the lock, and the word synchronized from both functions.
+  * Add the word synchronized to the front of each function.  This will look like:
+```
+synchronized public boolean areEqual()
+```
+  * Run the program again, to see the result.

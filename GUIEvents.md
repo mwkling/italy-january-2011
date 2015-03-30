@@ -1,0 +1,155 @@
+### Part 1: Keyboard Events ###
+  * Create a **new java project**.  You can use any name.
+  * Create a new class, called EventDemo.  Copy the code below:
+```
+import java.awt.Frame;
+import java.awt.TextField;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+
+public class EventDemo {
+	private Frame window;
+	private TextField field;
+	
+	public EventDemo(){
+		window = new Frame("Event demo");
+		window.setSize(300, 100);
+		
+		// Create a text field, add a listener, and add it to the window.
+		field = new TextField();
+		// **** Add listeners here :
+
+
+                // *************************
+		window.add(field);
+		
+		// Need this code to close the window
+		window.addWindowListener(new WindowAdapter(){
+			public void windowClosing(WindowEvent e){
+				window.setVisible(false); window.dispose(); System.exit(0);
+			}
+		});
+		window.setVisible(true);
+	}
+	
+	public static void main(String[] args){
+		EventDemo demo = new EventDemo();
+	}
+}
+
+```
+
+  * If you run the code now, you will see a window with a text box, that doesn't do anything else.
+  * Now, create a **new class**, called KeysDemo.  This class will be used to listen to **key presses**.  Copy the code below into this class:
+```
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
+// Inspired by: http://download.oracle.com/javase/tutorial/uiswing/events/keylistener.html
+public class KeysDemo implements KeyListener {
+
+	// We listen to what happens to the key presses
+	@Override
+	public void keyPressed(KeyEvent e) {
+		displayInfo(e, "PRESSED key: ");
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		displayInfo(e, "RELEASED key: ");
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		displayInfo(e, "TYPED key: ");
+	}
+	
+	private void displayInfo(KeyEvent e, String keyStatus){
+        
+        //You should only rely on the key char if the event
+        //is a key typed event.
+        int id = e.getID();
+        String keyString;
+        if (id == KeyEvent.KEY_TYPED) {
+            char c = e.getKeyChar();
+            keyString = "key character = '" + c + "'";
+        } else {
+            int keyCode = e.getKeyCode();
+            keyString = "key code = " + keyCode
+                    + " ("
+                    + KeyEvent.getKeyText(keyCode)
+                    + ")";
+        }
+        
+        String locationString = "key location: ";
+        int location = e.getKeyLocation();
+        if (location == KeyEvent.KEY_LOCATION_STANDARD) {
+            locationString += "standard";
+        } else if (location == KeyEvent.KEY_LOCATION_LEFT) {
+            locationString += "left";
+        } else if (location == KeyEvent.KEY_LOCATION_RIGHT) {
+            locationString += "right";
+        } else if (location == KeyEvent.KEY_LOCATION_NUMPAD) {
+            locationString += "numpad";
+        } else {
+            locationString += "unknown";
+        }
+        System.out.print(keyStatus + "\n  " + keyString + "\n  " + locationString + "\n");
+    }
+}
+```
+
+  * Now, in **EventDemo**, add the listener as follows:
+```
+field.addKeyListener(new KeysDemo());
+```
+  * Run the program.  Make sure you can see the **Console**.  Try typing a letter into the text box.  What is printed in the Console?
+  * When you type a letter, there are 3 events.  What are these 3?
+  * Try pressing a different key, like Shift, or Ctrl.  How many events are there?
+  * What happens if you hold down a key?
+  * Try many different keys.  Is there a difference between left and right shift?
+  * What happens if you type a **tab**?
+  * What happens if you type a capital letter using Shift?
+
+### Part 2: Mouse Events ###
+  * Now, create a new class called MouseDemo.  Copy the code below:
+```
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+// Inspired by: http://download.oracle.com/javase/tutorial/uiswing/events/mouselistener.html
+public class MouseDemo implements MouseListener {
+
+	public void mousePressed(MouseEvent e) {
+	       System.out.println("Mouse pressed; # of clicks: "
+	                    + e.getClickCount());
+	    }
+
+	    public void mouseReleased(MouseEvent e) {
+	       System.out.println("Mouse released; # of clicks: "
+	                    + e.getClickCount());
+	    }
+
+	    public void mouseEntered(MouseEvent e) {
+	       System.out.println("Mouse entered");
+	    }
+
+	    public void mouseExited(MouseEvent e) {
+	       System.out.println("Mouse exited");
+	    }
+
+	    public void mouseClicked(MouseEvent e) {
+	       System.out.println("Mouse clicked (# of clicks: "
+	                    + e.getClickCount() + ")");
+	    }
+}
+```
+  * Now, you must add this event listener to EventDemo.  Use this line:
+```
+field.addMouseListener(new MouseDemo());
+```
+  * Run the program, and make sure you can see the **Console**.  Move the mouse into and out of the window.  What is printed in the Console?
+  * Try clicking in the window.  How many events occur when you click?  What if you click, but don't let go?
+  * Now, try clicking quickly, several times in a row.  What happens?
+  * Click inside the window, move outside the window, and let go.  What happense?

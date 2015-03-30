@@ -1,0 +1,73 @@
+Code for Start.java:
+
+```
+// Referenced from:
+// http://java.sun.com/developer/Books/performance2/chap3.pdf
+
+public class Start implements Runnable {
+
+	private static AtomicAction t; 
+
+	@Override
+	public void run() {
+		try{
+			
+			// In this loop, we check if x and y are equal
+			// If both are executed in a row, they will always
+			// be equal.  If we print in between the two, they
+			// will not be equal.
+			for(int i=0; i<1000; i++){
+				if(i%60 == 0) System.out.println();
+				if(t.areEqual()) {
+					System.out.print(".");
+				}
+				else {
+					System.out.print("X");
+				}
+				Thread.sleep(20);
+			}
+			
+		}catch(Exception e){}
+	}
+
+	public static void main(String[] args) throws InterruptedException {
+		Thread thread = new Thread(new Start());
+		t = new AtomicAction();
+		
+		// This begins the printing
+		thread.start();
+		
+		// While we are printing, we also call reverse in the loop.
+		while(thread.isAlive()){
+			t.reverse();
+			Thread.sleep(30);
+		}
+	}
+}
+
+
+```
+
+Code for AtomicAction.java:
+```
+
+public class AtomicAction {
+
+	private boolean x;
+	private boolean y;
+	
+	// We want this to be an atomic action
+	// We always want both steps to be executed in a row.
+	public void reverse() throws InterruptedException{
+		x = !x;
+		Thread.sleep(9);
+		y = !y;
+	}
+	
+	public boolean areEqual(){
+		return x == y;
+	}
+
+}
+
+```

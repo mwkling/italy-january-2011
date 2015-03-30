@@ -1,0 +1,193 @@
+
+```
+import java.awt.Frame;
+import java.awt.GridLayout;
+import java.awt.Label;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+
+public class Morra extends Frame {
+	// Add variables here:
+
+	public Morra(){
+		super("Morra");
+		this.setSize(400, 160);
+		
+		// The window will be a 4x4 grid
+		this.setLayout(new GridLayout(4,4));
+		
+		// Change these:
+		this.add(new Label("1"));
+		this.add(new Label("2"));
+		this.add(new Label("3"));
+		this.add(new Label("4"));
+		this.add(new Label("5"));
+		this.add(new Label("6"));
+		this.add(new Label("7"));
+		this.add(new Label("8"));
+		this.add(new Label("9"));
+		this.add(new Label("10"));
+		this.add(new Label("11"));
+		this.add(new Label("12"));
+		this.add(new Label("13"));
+		this.add(new Label("14"));
+		this.add(new Label("15"));
+		this.add(new Label("16"));
+		
+		
+		
+		// If you do not have this code, you can not close
+		// the window.
+		this.addWindowListener(new WindowAdapter(){
+			public void windowClosing(WindowEvent e){
+				setVisible(false); dispose(); System.exit(0);
+			}
+		});
+	}
+	
+	public static void main(String[] args) {
+		// Create and display the window
+		Morra game = new Morra();
+		game.setVisible(true);
+	}
+
+}
+
+```
+
+  * If you run the program now, you should see window with the numbers 1-16.
+  * Now, we will add buttons and text to the Window.  We want to use a Grid to lay these out.  The grid has 4 rows and 4 columns.  To do this, we used the code below (don't copy, it is already there):
+```
+// The window will be a 4x4 grid
+this.setLayout(new GridLayout(4,4));
+```
+  * Next, we start adding things to the grid.  They will be added from left to right, as shown:
+![http://download.oracle.com/javase/1.4.2/docs/api/java/awt/doc-files/GridLayout-1.gif](http://download.oracle.com/javase/1.4.2/docs/api/java/awt/doc-files/GridLayout-1.gif)
+  * First, change the labels in the top row so they say the correct thing:
+```
+this.add(new Label("Fingers"));  // For example, change the second label to say Fingers.
+```
+
+Check to make sure the top row looks correct.
+
+  * Now, we move to the second row.  First, change the Label for the player.
+  * Next, we want to add the boxes for choosing the number of fingers and the player's guess.  To do this, we need to create new variables in the class:
+```
+private Choice fingerChoice;
+private Choice sumChoice;
+```
+  * Now, in the constructor we can make a new fingerChoice box, and add different choices.  You can add choices for the numbers from 1 to 5.
+```
+fingerChoice = new Choice();
+fingerChoice.add("1");
+fingerChoice.add("2");
+// Continue in the same way here--> 
+
+this.add(fingerChoice);  // This will replace Label 6
+
+sumChoice = new Choice();
+sumChoice.add("1");
+sumChoice.add("2");
+// Continue in the same way here--> 
+
+this.add(sumChoice);  // This will replace Label 7
+```
+  * Run the program to see if you made the choice boxes correctly.
+  * Lastly on this row, we add a Label for the player score.  Add a Label to the class, below "fingerChoice" and "sumChoice":
+```
+private Label playerScoreLabel;
+```
+  * Then, initialize the label, and add it to the Frame, in the constructor:
+```
+playerScoreLabel = new Label("0");
+this.add(playerScoreLabel);  // This will replace Label 8
+```
+  * For the third row, change "Label 9" to say "Computer".  Then, add three more variables to the class for the computer information:
+```
+private Label computerFingersLabel;
+private	Label computerGuessLabel;
+private Label computerScoreLabel;
+```
+  * Initialize and add these in the same way as "playerScoreLabel":
+```
+computerFingersLabel = new Label("-");
+this.add(computerFingersLabel);  // This will replace Label 10
+computerGuessLabel = new Label("-");
+this.add(computerGuessLabel);  // This will replace Label 11
+computerScoreLabel = new Label("0");
+this.add(computerScoreLabel);  // This will replace Label 12
+```
+  * On the last row, add two buttons, one to Play and one to Reset.
+```
+Button playButton = new Button("Play");
+Button resetButton = new Button("Reset");
+this.add(playButton);   // This will replace Label 13
+this.add(resetButton);  // This will replace Label 14
+```
+  * Finally, add a TextField to the class where you can store the final score of the game.
+```
+private TextField endScoreTextbox;
+```
+  * To initialize the TextField with a number, use:
+```
+endScoreTextbox = new TextField("11");
+this.add(endScoreTextbox);  // This will replace Label 16
+```
+  * **Now, run the program and make sure the window has all of the parts you need.**
+  * To finish the program, we must make the Play and Reset buttons do something.  First, we can do the reset button, which is easier.  To add an 'Event Handler', use the example here:
+```
+resetButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+                            // When you press reset, code goes here:
+			}
+		});
+```
+
+  * When you press reset, you need to change the Labels back to their original values.  Add code for all of the labels.  For example:
+```
+playerScoreLabel.setText("0");
+computerScoreLabel.setText("0");
+```
+  * Add an 'Event Handler' for the Play button as well:
+```
+playButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+                            // When you press play, code goes here:
+			}
+		});
+
+```
+  * Here, you should add the code for playing one round of the game.  First, you need to read the player choices for Fingers and the Sum.  This example shows how to do this:
+```
+int playerFingers = Integer.parseInt(fingerChoice.getItem(fingerChoice.getSelectedIndex()));
+int playerSumGuess = Integer.parseInt(sumChoice.getItem(sumChoice.getSelectedIndex()));
+```
+  * Next, you need to determine the fingers the computer will use, and the guess.  You can generate these randomly.  Then, update the Labels with these values.
+```
+int compFings = (int)(Math.random()*5 + 1);  // This generates a random integer from 1-5.  Why does this work?
+```
+  * Now, check the sum of the player and computer fingers, to see if either player wins a point.  If so, add 1 to their score, and update the score Label.  Code for updating the labels is below:
+```
+playerScoreLabel.setText(Integer.toString(playerScore));
+computerScoreLabel.setText(Integer.toString(computerScore));
+```
+  * Lastly, we must check if one player has won the game.  To get the end score from the box, we can use:
+```
+int endScore = Integer.parseInt(endScoreTextbox.getText());
+```
+  * If someone has won, we can display a message box to them.  An example would be:
+```
+if(playerScore == endScore){
+					// Player wins
+					JOptionPane.showMessageDialog(null, "You win");
+				}
+```
+  * Add message boxes for the Computer winning, and a Tie.
+
+### Other things to add ###
+  * Instead of a pop up box, highlight the score when a player wins.
+  * Make the computer smarter, by making it only guess a sum that is larger than the number of fingers it picks.
+  * You can try adding a second computer player, so there are three in total, and you must guess the sum of all three.
+  * Try changing the allowed number of fingers, so you can use all 10 fingers on both hands.
+  * Using the GridLayout, make a new game using a 3x3 grid of Tic-Tac-Toe.  You can use buttons for each square, with an X or an O on them.

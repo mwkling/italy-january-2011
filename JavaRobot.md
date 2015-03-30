@@ -1,0 +1,34 @@
+
+```
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+
+
+public class RobotDemo {
+	static public void main(String[] args) throws Exception{
+		Robot r = new Robot();
+		
+		r.mouseMove(10, 10);
+	}
+}
+```
+
+  * When you run the program, the mouse should move to the top corner of the screen.  Try moving the mouse somewhere else.
+  * To click the mouse, use press and then release:
+```
+r.mousePress(InputEvent.BUTTON1_MASK);
+r.mouseRelease(InputEvent.BUTTON1_MASK);
+```
+  * Change this to **BUTTON2\_MASK** for Left click.
+  * To press a key on the keyboard, use keyPress and keyRelease:
+```
+r.keyPress(KeyEvent.VK_ALT);
+r.keyRelease(KeyEvent.VK_ALT);
+```
+  * You may need to pause in between key presses or mouse clicks if they are to fast.  To pause, use:
+```
+Thread.sleep(100);  // CHANGE the number to pause for longer.
+```
+  * Try writing a robot to do a useful task, like opening a file.

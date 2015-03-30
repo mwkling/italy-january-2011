@@ -1,0 +1,32 @@
+Everything here taken from the MIT 6.033 course:
+http://web.mit.edu/6.033/www/assignments/hands-on-traceroute.html
+
+#### Part 1: Ping ####
+  * Open the command prompt on your computer.
+  * To begin, type "ping /?".  This will show the different options for the ping command.
+  * Try using ping, by typing "ping google.com".  Look at the response.
+  * Look at the options for "ping /?".  How would you send 10 packets to a certain host?
+  * Send 10 packets to the following hosts:
+```
+www.csail.mit.edu       
+www.berkeley.edu 
+www.usyd.edu.au
+www.kyoto-u.ac.jp
+```
+  * What was the average time for each of these sites?  Why are some sites longer to respond than others?
+  * Now, try sending packets with a size of 512 bytes, and 1024 bytes.  If you don't know how to change the size, look again at the options for "ping /?".  Did the average time change when sending packets of different sizes?
+  * Finally, try sending pings to the following two sites:
+```
+www.wits.ac.za         (University of the Witwatersrand, Johannesburg)
+www.microsoft.com 
+```
+  * Did you get a response?  What happens if you type these sites into a web browser (like Chrome, or Firefox)?
+
+#### Part 2: Tracert ####
+Now, we will look at the tracert command for determining the route that packets take when travelling over the internet.
+  * First, type "tracert /?" at the command line, so you can read the options for this function.
+  * Now, type in "tracert google.com".  View the observed output.  Can you see the entire route from your computer, to this site?
+  * Choose 5 other websites, and do a tracert to each of them.  Do these results have anything in common?
+  * Try "tracert 18.31.0.200".  What is the result?
+  * Search on google to determine exactly how tracert works.  Which protocol does tracert use?
+  * Try going to http://looking-glass.optus.net.au, and use it to find a route to one of the websites you chose.  How does this route compare to the route from your computer?

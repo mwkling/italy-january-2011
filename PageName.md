@@ -1,0 +1,29 @@
+
+```
+int port = 0;
+while(port < 500)
+{
+try{
+
+}
+catch(Exception e)
+{
+System.out.println("Could not listen on port: " + port);
+}
+port = port + 1;
+}
+```
+  * Inside the loop, we must make a new socket.  Use ServerSocket:
+```
+ServerSocket serverSocket = new ServerSocket(port);
+```
+After the **catch**, add a finally block:
+```
+finally{
+	try {
+		serverSocket.close();
+	} catch (Exception e) {
+	}
+}
+```
+  * Try running the program.  Compare with the Wikipedia list of ports, why are some ports blocked?

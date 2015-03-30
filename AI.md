@@ -1,0 +1,185 @@
+
+```
+def start_chat():
+    ###########################
+    ### CHANGE:
+    ######  ###################
+    
+    normal_responses = { 'hello' : 'How are you?',
+                     'italian' : 'I dont speak italian.',
+                     'old' : 'I am 1 day old.',
+    }
+    leaving_phrases = ['quit', 'goodbye']
+    default_response = 'Ok.'
+
+    ###################################
+    
+    response = 'Hello.'
+    while True:
+        # Read line from the user
+        user = raw_input(response + '\n')
+
+        # Make lower case (A->a). Remove '.', '?' or '!'
+        user = user.lower()
+        if len(user)>0 and (user[len(user)-1] == '.' or user[len(user)-1] == '?' or user[len(user)-1] == '!'):
+            user = user[0:-1]
+
+        # Break into words.
+        words = user.split()
+        #print words
+
+        # Look for response
+        foundAnswer = False
+        for word in words:
+            if normal_responses.has_key(word):
+                response = normal_responses[word]
+                foundAnswer = True
+                break
+
+        # If no response found, use default.
+        if not foundAnswer:
+            response = default_response
+
+        # Check if they user wants to leave.
+        for word in words:
+            if word in leaving_phrases:
+                print 'Goodbye.'
+                return            
+
+```
+  * Save the file as chatbot.py.  Press F5 to run the program.
+  * To start the robot chatting, type **start\_chat()**
+  * Now, **add to the list** in normal\_responses.  By adding more words, you can make the robot have a better conversation.
+  * What happens if you type a phrase that has two of the words in it, such as 'hello, how old are you?'
+  * Change the default phrase, and add to the leaving\_phrases list.
+### Part 2: Tic Tac Toe ###
+  * Create a new File, and paste the code below for tic-tac-toe:
+```
+import sys
+import random
+
+### TTT text based
+def game():
+    board = [0,0,0,0,0,0,0,0,0]
+    winners = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7],
+                   [2, 5, 8], [0, 4, 8], [2, 4, 6]]
+    def allEqual(list):
+        return not list or list == [list[0]] * len(list)
+    def print_board():
+        for i in range(9):
+            square = board[i]
+            if square==0:
+                sys.stdout.write(' ')
+            if square==1:
+                sys.stdout.write('X')
+            if square==2:
+                sys.stdout.write('O')
+            if i % 3 == 2 and not(i==8):
+                sys.stdout.write("\n-----\n")
+            elif i%3 == 1 or i%3 == 0:
+                sys.stdout.write('|')
+    def check_game_end(player):
+        for win in winners:
+            if board[win[0]]>0 and allEqual([board[i] for i in win]):
+                print player + ' wins.'
+                return True
+        for i in board:
+            if i==0:
+                return False
+        print '\nIt is a draw.'
+        return True
+    def nextrand():
+        for i in range(9):
+            if board[i]==0:
+                return i
+    
+    def rand_comp():
+        while True:
+            move = random.randint(0, 8)
+            #move = nextrand()
+            if board[move] == 0:
+                return move
+            
+    def win_comp():
+        for win in winners:
+            if board[win[0]]==board[win[1]] and board[win[0]]==2 and board[win[2]]==0:
+                return win[2]
+            elif board[win[0]]==board[win[2]] and board[win[0]]==2 and board[win[1]]==0:
+                return win[1]
+            elif board[win[1]]==board[win[2]] and board[win[1]]==2 and board[win[0]]==0:
+                return win[0]
+        return rand_comp()
+
+    def block_comp():
+        for win in winners:
+            if board[win[0]]==board[win[1]] and board[win[0]]==1 and board[win[2]]==0:
+                return win[2]
+            elif board[win[0]]==board[win[2]] and board[win[0]]==1 and board[win[1]]==0:
+                return win[1]
+            elif board[win[1]]==board[win[2]] and board[win[1]]==1 and board[win[0]]==0:
+                return win[0]
+        return win_comp()        
+
+    def first_comp():
+        moves = 0
+        for i in board:
+            if not i==0:
+                moves = moves + 1
+        if moves == 1 and board[5]==0:
+            return 4
+        elif moves == 1:
+            return 0
+        else:
+            return block_comp()
+
+            
+    print_board()
+    while True:
+        move = raw_input('\nChoose your move.\n')
+        num = int(move)
+        num = num -1
+        if not board[num] == 0:
+            print 'Square is taken, choose again.'
+            continue
+        else:
+            board[num] = 1
+        print_board()
+        if check_game_end('\nPlayer '):
+            return
+        
+        #Make computer move##########
+        ## CHANGE here:
+        move = rand_comp()
+        #############################
+
+
+        
+        board[move] = 2
+        print '\nComputer moves:\n'
+        print_board()
+        if check_game_end('\nComputer '):
+            return
+
+```
+  * Run the program.  To play, type the number of the square you want to play on.  Remember the squares are numbered:
+  * 1 2 3
+  * 4 5 6
+  * 7 8 9
+  * Can you beat the random player often?
+  * Now, in the code where it says CHANGE, change the line to:
+```
+move = win_comp()
+```
+  * Play the computer again.  Why is the computer smarter now?
+  * Again, replace the line with:
+```
+move = block_comp()
+```
+  * Play the computer again.  Is the computer harder now?  Can you still beat the computer?
+  * Go to http://ostermiller.org/calc/tictactoe.html.  Set the computer to Expert.  Can you ever win against the computer?
+### Part 3: Dots and Boxes ###
+  * Try playing dots and boxes against someone on paper.  Use the strategy that I demonstrated.
+  * Go to http://www.math.ucla.edu/~tom/Games/dots&boxes.html.  Choose a board of size 6x6.  Can you beat the computer?
+
+  * Look at the chess robot at : http://turbulence.org/spotlight/thinking/chess.html
+  * Observe the lines between the squares as the computer thinks.  Try to play a complete game.
