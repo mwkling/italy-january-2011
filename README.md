@@ -14,3 +14,4 @@ Exercises are varied and include:
  * pong
  * etc.
  
+Code does not appear properly (have not updated formatting from the original google wiki format), so view the raw files to see everything.
